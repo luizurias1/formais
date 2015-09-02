@@ -75,8 +75,18 @@ def calculaFecho():
             for it in aux:
                 value.append(it)
     for key, value in sFecho.items():
-        sFecho[key].append(key)                     
-    return sFecho 
+        sFecho[key].append(key)
+    for key, value in se.items():
+        if key != 'M2':
+            aux = sFecho[key]
+            text =''
+            for item in aux:
+                text += item
+            se[text] = aux
+            ref = se[key]
+            if len(ref) > 1:
+                del se[key]
+    return se 
 
 
 def determina(s):
