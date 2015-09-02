@@ -1,4 +1,3 @@
-
 q0 = {0: ['q0','q1'], 1: ['q0']}
 q1 = {0: ['q2'], 1: ['M']}
 q2 = {0: ['M'], 1: ['q3']}
@@ -52,7 +51,6 @@ def procuraEstados(s):
                     criaEstado(v)
 def calculaFecho():
      sFecho = {}
-     for key, value in s.items():
         
 
 def determina (s):
