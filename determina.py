@@ -62,5 +62,5 @@ def determina (s):
             atualizaEstados(d)
             procuraEstados(s)
         print(s)
-
+        #asdfasdf
 determina(s)
