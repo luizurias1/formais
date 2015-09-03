@@ -86,7 +86,7 @@ def calculaFecho():
             ref = se[key]
             if len(ref) > 1:
                 del se[key]
-    return se 
+    return se
 
 
 def determina(s):
