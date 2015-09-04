@@ -1,10 +1,10 @@
 
-q0 = {0: ['q0','q1'], 1: ['q0']}
-q1 = {0: ['q2'], 1: ['M']}
-q2 = {0: ['M'], 1: ['q3']}
-q3 = {0: ['M'], 1: ['M']}
-M = {0: ['M'], 1: ['M']}
-s = {'q0': q0, 'q1': q1, 'q2': q2, 'q3': q3, 'M': M}
+# q0 = {0: ['q0','q1'], 1: ['q0']}
+# q1 = {0: ['q2'], 1: ['M']}
+# q2 = {0: ['M'], 1: ['q3']}
+# q3 = {0: ['M'], 1: ['M']}
+# M = {0: ['M'], 1: ['M']}
+# s = {'q0': q0, 'q1': q1, 'q2': q2, 'q3': q3, 'M': M}
 # --------------------------------------------------
 q4 = {1: ['q4'], 2: ['M2'], 3: ['M2'], '&': ['q5']}
 q5 = {1: ['M2'], 2: ['q5'], 3: ['M2'], '&': ['q6']}
@@ -13,11 +13,11 @@ M2 = {1: ['M2'], 2: ['M2'], 3: ['M2'], '&': ['M2']}
 se = {'q4': q4, 'q5': q5, 'q6': q6, 'M2': M2}
 #---------------------------------------------------
 
-d = s.copy()
+d = se.copy()
 st = []
-alfabeto = q0.keys()
+alfabeto = q4.keys()
 
-for key, value in s.items():
+for key, value in se.items():
     if key not in st:
         st.append(key)
 
@@ -76,17 +76,14 @@ def calculaFecho():
                 value.append(it)
     for key, value in sFecho.items():
         sFecho[key].append(key)
-    for key, value in se.items():
-        if key != 'M2':
-            aux = sFecho[key]
-            text =''
-            for item in aux:
-                text += item
-            se[text] = aux
-            ref = se[key]
-            if len(ref) > 1:
-                del se[key]
-    return se
+    fe = {}
+    for key, value in sFecho.items():
+        fecho=''
+        for item in value:
+            fecho+=item
+        fe[key]=fecho
+    sFecho = fe
+    atualizaFecho(sFecho)
 
 
 def determina(s):
@@ -99,5 +96,33 @@ def determina(s):
             procuraEstados(s)
         print(s)
 
-test = calculaFecho()
-print(test)
+def atualizaFecho(fecho):
+    print (fecho)
+    af = fecho.keys
+    dit = {}
+    final = {}
+    d = {}
+    y = '&'
+    for key, value in se.items():
+        for k, v in fecho.items():
+            if key == k:
+                dit[v] = value
+    for key, value in dit.items():
+        for k, v in value.items():
+            aux = v
+            for item in aux:
+                g = []                
+                if item !='M2':
+                    a = fecho[item]
+                    g.append(a)
+                    d[k] = g
+                    dit[a] = d
+    help = {}
+    for key, value in dit.items():
+        for k, v in value.items():
+            if k != y:
+                help[k] = v
+        final[key] = help
+    print(final)
+
+calculaFecho()
