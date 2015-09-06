@@ -92,8 +92,10 @@ class Automato:
         alfabeto = self.getAlfabeto()
         for key, value in states.items():
             if len(fecho[key]) > 1:
-                self.automato[value] = {}
-
+                aux = self.automato[value] = {}
+                for item in alfabeto:
+                    aux[item] = []
+                    
     def determina(self):
         alfabeto = self.getAlfabeto()
         if '&' in alfabeto:
