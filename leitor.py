@@ -64,5 +64,3 @@ class Leitor :
 			if element not in self.rejected:
 				state += element
 		return dict
-l = Leitor()
-automato = l.ler()

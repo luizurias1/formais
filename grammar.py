@@ -1,13 +1,5 @@
 __author__ = 'luizu'
 
-terminal = ['a', 'b']
-nTerminal = ['A', 'B', 'S']
-producoes = {
-    'S': ['aA', 'bB', 'a', 'b'],
-    'A': ['aA', 'bA', 'a'],
-    'B': ['bB', 'aB', 'b']
-}
-
 class Grammar:
 
     def __init__(self,producoes,terminais,nonTerminais):
@@ -53,13 +45,7 @@ class Grammar:
         test = {}
         for key, value in s.items():
             if key == 'M' or  key == 'F':
-                for item in terminal:
+                for item in self.terminais:
                     test[item] = ['M']
                 s[key] = test
         return s
-
-#########################################################################
-
-g = Grammar(producoes,terminal,nTerminal)
-automato = g.convertGtoAF()
-# print(automato)
