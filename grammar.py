@@ -50,7 +50,7 @@ class Grammar:
                           estado = caracter
                       test[transicao] = [estado]
             s[key] = test
-
+        test = {}
         for key, value in s.items():
             if key == 'M' or  key == 'F':
                 for item in terminal:
@@ -62,4 +62,4 @@ class Grammar:
 
 g = Grammar(producoes,terminal,nTerminal)
 automato = g.convertGtoAF()
-print(automato)
+# print(automato)
