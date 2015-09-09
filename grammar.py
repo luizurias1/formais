@@ -36,11 +36,11 @@ class Grammar:
                     test[item].append('F')
                 else:
                   for caracter in item:
-                      if caracter.islower():
-                          transicao = caracter
-                      if caracter.isupper():
+                      if caracter in self.nonTerminais:
                           estado = caracter
-                      test[transicao] = [estado]
+                      if caracter in self.terminais:
+                          transicao = caracter
+                  test[transicao] = [estado]
             s[key] = test
         test = {}
         for key, value in s.items():
