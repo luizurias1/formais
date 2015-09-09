@@ -1,6 +1,7 @@
 from leitor import Leitor
 from determina import Automato
 from grammar import Grammar
+from leitorG import LeitorG
 
 # q0 = {0: ['q0','q1'], 1: ['q0']}
 # q1 = {0: ['q2'], 1: ['M']}
@@ -15,22 +16,24 @@ from grammar import Grammar
 # M = {1: ['M'], 2: ['M'], 3: ['M'], '&': ['M']}
 # se = {'q4': q4, 'q5': q5, 'q6': q6, 'M': M}
 
-terminal = ['a', 'b']
-nTerminal = ['A', 'B', 'S']
-producoes = {
-    'S': ['aA', 'bB', 'a', 'b'],
-    'A': ['aA', 'bA', 'a'],
-    'B': ['bB', 'aB', 'b']
-    }
+# terminal = ['a', 'b']
+# nTerminal = ['A', 'B', 'S']
+# producoes = {
+#     'S': ['aA', 'bB', 'a', 'b'],
+#     'A': ['aA', 'bA', 'a'],
+#     'B': ['bB', 'aB', 'b']
+#     }
 
-# g = Grammar(producoes,terminal,nTerminal)
-# automato = g.convertGtoAF()
-# a = Automato(automato)
-# print(automato)
-# print(a.determina())
-
-leitor = Leitor()
-se = leitor.ler()
-a = Automato(se)
-automato = a.determina()
+leitorg = LeitorG()
+producoes, terminais, nTerminais = leitorg.ler()
+g = Grammar(producoes,terminais,nTerminais)
+automato = g.convertGtoAF()
+a = Automato(automato)
 print(automato)
+print(a.determina())
+
+# leitor = Leitor()
+# se = leitor.ler()
+# a = Automato(se)
+# automato = a.determina()
+# print(automato)
