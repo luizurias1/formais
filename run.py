@@ -3,13 +3,24 @@ from determina import Automato
 from grammar import Grammar
 from leitorG import LeitorG
 
+
+#---------------------------------------------------
 # q0 = {0: ['q0','q1'], 1: ['q0']}
 # q1 = {0: ['q2'], 1: ['M']}
 # q2 = {0: ['M'], 1: ['q3']}
 # q3 = {0: ['M'], 1: ['M']}
 # M = {0: ['M'], 1: ['M']}
-# s = {'q0': q0, 'q1': q1, 'q2': q2, 'q3': q3, 'M': M}
+# se = {'q0': q0, 'q1': q1, 'q2': q2, 'q3': q3, 'M': M}
 # --------------------------------------------------
+q0 = {'a': ['M'], 'b': ['M'], '&': ['q1', 'q3']}
+q1 = {'a': ['q2'], 'b': ['q1'], '&': ['M']}
+q2 = {'a': ['q1'], 'b': ['q2'], '&': ['M']}
+q3 = {'a': ['q3'], 'b': ['q4'], '&': ['M']}
+q4 = {'a': ['q4'], 'b': ['q5'], '&': ['M']}
+q5 = {'a': ['q5'], 'b': ['M'], '&': ['M']}
+M = {'a': ['M'], 'b': ['M'], '&': ['M']}
+se = {'q0': q0, 'q1': q1, 'q2': q2, 'q3': q3, 'q4': q4, 'q5': q5, 'M': M}
+#---------------------------------------------------
 # q4 = {1: ['q4'], 2: ['M'], 3: ['M'], '&': ['q5']}
 # q5 = {1: ['M'], 2: ['q5'], 3: ['M'], '&': ['q6']}
 # q6 = {1: ['M'], 2: ['M'], 3: ['q6'], '&': ['M']}
@@ -24,16 +35,16 @@ from leitorG import LeitorG
 #     'B': ['bB', 'aB', 'b']
 #     }
 
-leitorg = LeitorG()
-producoes, terminais, nTerminais = leitorg.ler()
-g = Grammar(producoes,terminais,nTerminais)
-automato = g.convertGtoAF()
-a = Automato(automato)
-print(automato)
-print(a.determina())
+# leitorg = LeitorG()
+# producoes, terminais, nTerminais = leitorg.ler()
+# g = Grammar(producoes,terminais,nTerminais)
+# automato = g.convertGtoAF()
+# a = Automato(automato)
+# print(automato)
+# print(a.determina())
 
 # leitor = Leitor()
 # se = leitor.ler()
-# a = Automato(se)
-# automato = a.determina()
-# print(automato)
+a = Automato(se)
+automato = a.determina()
+print(automato)

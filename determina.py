@@ -79,17 +79,42 @@ class Automato:
 
     def atualizaAFND(self, fecho, states):
         alfabeto = self.getAlfabeto()
+        chaves = states.keys()
+        dt = {}
+        a = []        
         for key, value in states.items():
             if len(fecho[key]) > 1:
                 aux = self.automato[value] = {}
                 for item in alfabeto:
-                    aux[item] = []
-                    
+                    if item != '&':
+                        aux[item] = []
+                        for k, v in fecho.items():
+                            if k == key:
+                                for it in v:
+                                    s = self.automato[it]
+                                    for chave, valor in s.items():
+                                        for i in valor:
+                                            if i not in aux[item]:
+                                                if i in chaves:
+                                                    a = states[i]
+                                                    if item == chave:
+                                                        aux[item].append(a)
+                                                elif len(a) == 0:
+                                                    aux[item].append('M')
+        for key, value in states.items():
+            if len(fecho[key]) > 1:
+                del(self.automato[key])
+        self.d = self.automato.copy()
+
     def determina(self):
         alfabeto = self.getAlfabeto()
         if '&' in alfabeto:
             fecho, states = self.calculaFecho()
             self.atualizaAFND(fecho, states)
+            self.procuraEstados()
+            while len(self.automato) != len(self.d):
+                self.atualizaEstados(self.d)
+                self.procuraEstados()
             return self.automato
         else:   
             self.procuraEstados()
