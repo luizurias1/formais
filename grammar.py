@@ -23,6 +23,7 @@ class Grammar:
             s[a] = aux
         return s
 
+
     def convertGtoAF(self):
         s = {}
         s = self.initEstados()

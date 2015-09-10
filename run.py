@@ -26,6 +26,18 @@ se = {'q0': q0, 'q1': q1, 'q2': q2, 'q3': q3, 'q4': q4, 'q5': q5, 'M': M}
 # q6 = {1: ['M'], 2: ['M'], 3: ['q6'], '&': ['M']}
 # M = {1: ['M'], 2: ['M'], 3: ['M'], '&': ['M']}
 # se = {'q4': q4, 'q5': q5, 'q6': q6, 'M': M}
+#----------------------------------------------------
+
+#Automata to grammar
+
+q0 = {'a': ['q1'], 'b': ['q2']}
+q1 = {'a': ['q0'], 'b': ['q3']}
+q2 = {'a': ['q3'], 'b': ['q0']}
+q3 = {'a': ['q2'], 'b': ['q1']}
+M = {'a': ['M'], 'b': ['M']}
+se = {'q0': q0, 'q1': q1, 'q2': q2, 'q3': q3, 'M': M}
+inicial = 'q0'
+finais = ['q1']
 
 # terminal = ['a', 'b']
 # nTerminal = ['A', 'B', 'S']
@@ -45,6 +57,10 @@ se = {'q0': q0, 'q1': q1, 'q2': q2, 'q3': q3, 'q4': q4, 'q5': q5, 'M': M}
 
 # leitor = Leitor()
 # se = leitor.ler()
-a = Automato(se)
-automato = a.determina()
-print(automato)
+
+a = Automato(se, inicial, finais)
+prod, termi, non, inici= a.automataToGrammar()
+print(prod)
+print(termi)
+print(non)
+print(inici)

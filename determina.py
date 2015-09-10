@@ -1,10 +1,13 @@
 __author__ = 'lucasmpalma'
 
+
 class Automato:
 
-    def __init__(self, states):
+    def __init__(self, states,inicial, finais):
         self.automato = states
         self.d = states.copy()
+        self.inicial = inicial
+        self.finais = finais
 
     def getAlfabeto(self):
         aState = next (iter (self.automato.values()))
@@ -122,3 +125,33 @@ class Automato:
                 self.atualizaEstados(self.d)
                 self.procuraEstados()
             return self.automato
+
+    def automataToGrammar(self):
+        nonTerminais = []
+        terminais = []
+        prod = {}
+        for k, v in self.d.items():
+            if k != 'M':
+                nonTerminais.append(k)
+            for key, value in v.items():
+                if key not in terminais:
+                    terminais.append(key)
+        for a in nonTerminais:
+            prod[a] = []
+
+        for k, v in self.d.items():
+            if k!= 'M':
+                for key, value in v.items():
+                    finale = ''.join(value)
+                    if finale in self.finais:
+                        aux = ''.join(key)
+                        prod[k].append(aux)
+                        aux = ''.join(key)+(''.join(value)).upper()
+                        prod[k].append(aux)
+                    else:
+                        aux = ''.join(key)+(''.join(value)).upper()
+                        prod[k].append(aux)
+
+        nonTerminais = [x.upper() for x in nonTerminais]
+        inicial = self.inicial
+        return prod, terminais, nonTerminais, inicial
