@@ -61,6 +61,7 @@ class Automato:
                             ns += item
                         if c >= 1:
                             self.finais.append(ns)
+                        ns = ''
                         self.criaEstado(v)
 
     def calculaFecho(self):
