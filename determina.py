@@ -1,9 +1,8 @@
-__author__ = 'lucasmpalma'
-
+__author__ = 'lucasmpalma and luizu'
 
 class Automato:
 
-    def __init__(self, states,inicial, finais):
+    def __init__(self, states, inicial, finais):
         self.automato = states
         self.d = states.copy()
         self.inicial = inicial
@@ -83,6 +82,9 @@ class Automato:
     def atualizaAFND(self, fecho, states):
         alfabeto = self.getAlfabeto()
         chaves = states.keys()
+        if self.inicial in chaves:
+            aux = states[self.inicial]
+            self.inicial = aux
         dt = {}
         a = []        
         for key, value in states.items():
@@ -107,6 +109,15 @@ class Automato:
         for key, value in states.items():
             if len(fecho[key]) > 1:
                 del(self.automato[key])
+        retorno = {}
+        novo = {}
+        for key, value in self.automato.items():
+            for k, v in value.items():
+                if k != '&':
+                    novo[k] = v
+            retorno[key] = novo
+            novo = {}
+        self.automato = retorno
         self.d = self.automato.copy()
 
     def determina(self):
@@ -138,7 +149,6 @@ class Automato:
                     terminais.append(key)
         for a in nonTerminais:
             prod[a] = []
-
         for k, v in self.d.items():
             if k!= 'M':
                 for key, value in v.items():
@@ -151,7 +161,14 @@ class Automato:
                     else:
                         aux = ''.join(key)+(''.join(value)).upper()
                         prod[k].append(aux)
-
         nonTerminais = [x.upper() for x in nonTerminais]
         inicial = self.inicial
         return prod, terminais, nonTerminais, inicial
+
+    def printAtomato(self):
+        print "{:<8} {:<15} ".format('S','Transition')
+        for key, value in self.automato.items():
+            if key == self.inicial:
+                print "{:<8} {:<15} ".format('->'+''.join(key), value)
+            else:    
+                print "{:<8} {:<15} ".format(key, value)

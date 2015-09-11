@@ -11,6 +11,8 @@ from leitorG import LeitorG
 # q3 = {0: ['M'], 1: ['M']}
 # M = {0: ['M'], 1: ['M']}
 # se = {'q0': q0, 'q1': q1, 'q2': q2, 'q3': q3, 'M': M}
+# inicial = 'q0'
+# finais = ['q3']
 # --------------------------------------------------
 q0 = {'a': ['M'], 'b': ['M'], '&': ['q1', 'q3']}
 q1 = {'a': ['q2'], 'b': ['q1'], '&': ['M']}
@@ -20,24 +22,28 @@ q4 = {'a': ['q4'], 'b': ['q5'], '&': ['M']}
 q5 = {'a': ['q5'], 'b': ['M'], '&': ['M']}
 M = {'a': ['M'], 'b': ['M'], '&': ['M']}
 se = {'q0': q0, 'q1': q1, 'q2': q2, 'q3': q3, 'q4': q4, 'q5': q5, 'M': M}
+inicial = 'q0'
+finais = ['q1', 'q4', 'q5']
 #---------------------------------------------------
 # q4 = {1: ['q4'], 2: ['M'], 3: ['M'], '&': ['q5']}
 # q5 = {1: ['M'], 2: ['q5'], 3: ['M'], '&': ['q6']}
 # q6 = {1: ['M'], 2: ['M'], 3: ['q6'], '&': ['M']}
 # M = {1: ['M'], 2: ['M'], 3: ['M'], '&': ['M']}
 # se = {'q4': q4, 'q5': q5, 'q6': q6, 'M': M}
+# inicial = 'q4'
+# finais = ['q6']
 #----------------------------------------------------
 
 #Automata to grammar
 
-q0 = {'a': ['q1'], 'b': ['q2']}
-q1 = {'a': ['q0'], 'b': ['q3']}
-q2 = {'a': ['q3'], 'b': ['q0']}
-q3 = {'a': ['q2'], 'b': ['q1']}
-M = {'a': ['M'], 'b': ['M']}
-se = {'q0': q0, 'q1': q1, 'q2': q2, 'q3': q3, 'M': M}
-inicial = 'q0'
-finais = ['q1']
+# q0 = {'a': ['q1'], 'b': ['q2']}
+# q1 = {'a': ['q0'], 'b': ['q3']}
+# q2 = {'a': ['q3'], 'b': ['q0']}
+# q3 = {'a': ['q2'], 'b': ['q1']}
+# M = {'a': ['M'], 'b': ['M']}
+# se = {'q0': q0, 'q1': q1, 'q2': q2, 'q3': q3, 'M': M}
+# inicial = 'q0'
+# finais = ['q1']
 
 # terminal = ['a', 'b']
 # nTerminal = ['A', 'B', 'S']
@@ -56,11 +62,16 @@ finais = ['q1']
 # print(a.determina())
 
 # leitor = Leitor()
-# se = leitor.ler()
-
+# se, inicial, finais = leitor.ler()
 a = Automato(se, inicial, finais)
-prod, termi, non, inici= a.automataToGrammar()
-print(prod)
-print(termi)
-print(non)
-print(inici)
+a.determina()
+a.printAtomato()
+
+# a = Automato(se, inicial, finais)
+# a.determina()
+# a.printAtomato()
+# prod, termi, non, inici = a.automataToGrammar()
+# print(prod)
+# print(termi)
+# print(non)
+# print(inici)

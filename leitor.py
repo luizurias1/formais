@@ -3,13 +3,14 @@ import json
 class Leitor :
 
     def __init__(self):
-        self.rejected = ['U', 'E', 'K', 'S', ' ', '=', '{', '}', ',', '(', ')', '[', ']', '>']
+        self.rejected = ['U', 'E', 'K', 'S', ' ', '=', '{', '}', ',', '(', ')', '[', ']', '>', 'I', 'F']
         pass
 
     def ler(self):
         file = open('entrada', 'r')
         dict = {}
         transition = []
+        finais = []
         for line in file:
             for world in line:
                 if world == 'K':
@@ -18,7 +19,30 @@ class Leitor :
                     dict, transition = self.geraAlfabeto(line, dict)
                 if world == 'S':
                     self.completaAutomato(dict, line, transition)
-        return dict
+                if world == 'I':
+                    inicial = self.geraInicial(line)
+                if world == 'F':
+                    finais = self.geraFinais(line)
+        return dict, inicial, finais
+
+    def geraFinais(self, line):
+        state = ''
+        finais = []
+        for element in line:
+            if element == ',' or element == '}':
+                finais.append(state)
+                state = ''
+            if element not in self.rejected:
+                state += element
+        return finais
+
+    def geraInicial(self, line):
+        inicial = ''
+        for element in line:
+            if element == '\n':
+                return inicial
+            if element not in self.rejected:
+                inicial += element
 
     def completaAutomato(self, dict, line, transition):
         fileName = ''
