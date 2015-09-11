@@ -40,6 +40,8 @@ class Automato:
 
     def procuraEstados(self):
         st = []
+        ns = ''
+        c = 0
         for key, value in self.automato.items():
             if key not in st:
                 st.append(key)
@@ -52,6 +54,13 @@ class Automato:
                         newState = newState + estado
                     if newState not in st and newState != '':
                         newState = ''
+                        for item in v:
+                            if item in self.finais:
+                                c += 1
+                        for item in v:
+                            ns += item
+                        if c >= 1:
+                            self.finais.append(ns)
                         self.criaEstado(v)
 
     def calculaFecho(self):
@@ -170,5 +179,7 @@ class Automato:
         for key, value in self.automato.items():
             if key == self.inicial:
                 print "{:<8} {:<15} ".format('->'+''.join(key), value)
+            elif key in self.finais:
+                print "{:<8} {:<15} ".format('*'+''.join(key), value)
             else:    
                 print "{:<8} {:<15} ".format(key, value)
