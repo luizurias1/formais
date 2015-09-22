@@ -175,6 +175,57 @@ class Automato:
         inicial = self.inicial
         return prod, terminais, nonTerminais, inicial
 
+    def genericAutomata(self):
+
+        genericAutomata = self.automato
+        for key, value in self.automato.items():
+            aux = {}
+            aux['&'] = []
+            if key == 'M':
+                del(genericAutomata[key])
+            if key in self.inicial:
+                aux['&'].append(key)
+                genericAutomata['qi'] = aux
+            if key in self.finais:
+                aux['&'] = ['M']
+                genericAutomata['qf'] = aux
+                for k, v in value.items():
+                    value['&'] = ['qf']
+        return genericAutomata
+
+    def automataToER(self):
+        genericAutomata = self.genericAutomata()
+        genericAux = genericAutomata
+
+        print(genericAutomata)
+        print(len(genericAutomata))
+        k = len(genericAutomata)
+        while(k>2):
+            #k = estado a ser removido
+            k, v = genericAutomata.items()[0]
+            while(k == 'qi' and k == 'qf'):
+                k, v = genericAutomata.items()[0]
+
+            #percorrendo dicionario para adequar
+            for key, value in genericAux.items():
+                aux = {}
+                if key != k:
+                    for alf, est in value.items():
+                        R1, R2, R3 = "", "", ""
+                        if k in est:
+                            for alfabetoAlcancadoPeloRem, estadosAlcancadosPeloRem in v.items():
+                                R1 = str(alf)+"."
+                                if k in estadosAlcancadosPeloRem:
+                                    R2 = "("+str(alfabetoAlcancadoPeloRem)+")*."
+                                else:
+                                    estadofinal = estadosAlcancadosPeloRem
+                                    R3 = ""+str(alfabetoAlcancadoPeloRem)
+                                expressaoFinal = R1+R2+R3
+                                aux[expressaoFinal] = estadofinal
+                                genericAutomata[key] =aux
+                                print(genericAutomata)
+                            del(genericAutomata[k])
+
     def printAtomato(self):
         print "{:<8} {:<15} ".format('S','Transition')
         for key, value in self.automato.items():
