@@ -1,5 +1,5 @@
 __author__ = 'lucasmpalma and luizu'
-
+import copy
 class Automato:
 
     def __init__(self, states, inicial, finais):
@@ -176,8 +176,8 @@ class Automato:
         return prod, terminais, nonTerminais, inicial
 
     def genericAutomata(self):
-
-        genericAutomata = self.automato
+        genericAutomata = copy.deepcopy(self.automato)
+        #adiciona qi e aponta os finais para qf
         for key, value in self.automato.items():
             aux = {}
             aux['&'] = []
@@ -187,51 +187,66 @@ class Automato:
                 aux['&'].append(key)
                 genericAutomata['qi'] = aux
             if key in self.finais:
-                aux['&'] = ['M']
-                genericAutomata['qf'] = aux
-                for k, v in value.items():
-                    value['&'] = ['qf']
+               for k, v in value.items():
+                   aux = copy.deepcopy(value)
+                   aux['&'] = ['qf']
+                   genericAutomata[key] = aux
+        alfabeto = self.getAlfabeto()
+        aux = {}
+        #adiciona qf
+        for a in alfabeto:
+            aux[a] = ['M']
+            genericAutomata['qf'] = aux
         return genericAutomata
 
     def automataToER(self):
         genericAutomata = self.genericAutomata()
-        genericAux = genericAutomata
+        genericAux = copy.deepcopy(genericAutomata)
 
         print(genericAutomata)
         print(len(genericAutomata))
-        k = len(genericAutomata)
-        while(k>2):
+        x = len(genericAutomata)
+        while(x>2):
             #k = estado a ser removido
-            k, v = genericAutomata.items()[0]
-            while(k == 'qi' and k == 'qf'):
-                k, v = genericAutomata.items()[0]
+            k, v = genericAutomata.popitem()
+            while(k == 'qi' or k == 'qf'):
+                genericAutomata[k] = v
+                k,v = genericAutomata.popitem()
 
             #percorrendo dicionario para adequar
             for key, value in genericAux.items():
                 aux = {}
                 if key != k:
                     for alf, est in value.items():
-                        R1, R2, R3 = "", "", ""
+                        R1, R2, R3, uniao = "", "", "", ""
                         if k in est:
+                            R1 = "("+str(alf)+"."
                             for alfabetoAlcancadoPeloRem, estadosAlcancadosPeloRem in v.items():
-                                R1 = str(alf)+"."
-                                if k in estadosAlcancadosPeloRem:
-                                    R2 = "("+str(alfabetoAlcancadoPeloRem)+")*."
-                                else:
+                                uniao = ""
+                                if estadosAlcancadosPeloRem in value.values() and k.split() != estadosAlcancadosPeloRem:
+                                    for uniaoK, uniaoV in value.items():
+                                        if uniaoV == estadosAlcancadosPeloRem:
+                                            uniao = "U("+str(uniaoK)+")"
+                                if k.split() in v.values() and R2 == "":
+                                    for fechoK, fechoV in v.items():
+                                        if fechoV == k.split():
+                                            R2 = "("+str(fechoK)+")*."
+                                if estadosAlcancadosPeloRem != k.split():
                                     estadofinal = estadosAlcancadosPeloRem
                                     R3 = ""+str(alfabetoAlcancadoPeloRem)
-                                expressaoFinal = R1+R2+R3
-                                aux[expressaoFinal] = estadofinal
-                                genericAutomata[key] =aux
+                                    expressaoFinal = R1+R2+R3+uniao+")"
+                                    aux[expressaoFinal] = estadofinal
+                                    genericAutomata[key] =aux
                                 print(genericAutomata)
-                            del(genericAutomata[k])
-
+            genericAux = copy.deepcopy(genericAutomata)
+            x -= 1
+        print(genericAutomata)
     def printAtomato(self):
-        print "{:<8} {:<15} ".format('S','Transition')
+        print('{:<8} {:<15} '.format('S', 'Transition'))
         for key, value in self.automato.items():
             if key == self.inicial:
-                print "{:<8} {:<15} ".format('->'+''.join(key), value)
+                print('{!s:<8} {!s:<15} '.format('->'+''.join(key), value))
             elif key in self.finais:
-                print "{:<8} {:<15} ".format('*'+''.join(key), value)
+                print('{!s:<8} {!s:<15} '.format('*'+''.join(key), value))
             else:    
-                print "{:<8} {:<15} ".format(key, value)
+                print('{!s:<8} {!s:<15} '.format(key, value))

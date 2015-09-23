@@ -1,5 +1,5 @@
-from leitor import Leitor
 from determina import Automato
+from leitor import Leitor
 from grammar import Grammar
 from leitorG import LeitorG
 
@@ -13,17 +13,17 @@ from leitorG import LeitorG
 # se = {'q0': q0, 'q1': q1, 'q2': q2, 'q3': q3, 'M': M}
 # inicial = 'q0'
 # finais = ['q3']
-# --------------------------------------------------
-q0 = {'a': ['M'], 'b': ['M'], '&': ['q1', 'q3']}
-q1 = {'a': ['q2'], 'b': ['q1'], '&': ['M']}
-q2 = {'a': ['q1'], 'b': ['q2'], '&': ['M']}
-q3 = {'a': ['q3'], 'b': ['q4'], '&': ['M']}
-q4 = {'a': ['q4'], 'b': ['q5'], '&': ['M']}
-q5 = {'a': ['q5'], 'b': ['M'], '&': ['M']}
-M = {'a': ['M'], 'b': ['M'], '&': ['M']}
-se = {'q0': q0, 'q1': q1, 'q2': q2, 'q3': q3, 'q4': q4, 'q5': q5, 'M': M}
-inicial = 'q0'
-finais = ['q1', 'q4', 'q5']
+# -------------------------------------------------
+# q0 = {'a': ['M'], 'b': ['M'], '&': ['q1', 'q3']}
+# q1 = {'a': ['q2'], 'b': ['q1'], '&': ['M']}
+# q2 = {'a': ['q1'], 'b': ['q2'], '&': ['M']}
+# q3 = {'a': ['q3'], 'b': ['q4'], '&': ['M']}
+# q4 = {'a': ['q4'], 'b': ['q5'], '&': ['M']}
+# q5 = {'a': ['q5'], 'b': ['M'], '&': ['M']}
+# M = {'a': ['M'], 'b': ['M'], '&': ['M']}
+# se = {'q0': q0, 'q1': q1, 'q2': q2, 'q3': q3, 'q4': q4, 'q5': q5, 'M': M}
+# inicial = 'q0'
+# finais = ['q1', 'q4', 'q5']
 #---------------------------------------------------
 # q4 = {1: ['q4'], 2: ['M'], 3: ['M'], '&': ['q5']}
 # q5 = {1: ['M'], 2: ['q5'], 3: ['M'], '&': ['q6']}
@@ -53,6 +53,16 @@ finais = ['q1', 'q4', 'q5']
 #     'B': ['bB', 'aB', 'b']
 #     }
 
+#Automata to ER
+q0 = {'a': ['q1'], 'b': ['q2']}
+q1 = {'a': ['q0'], 'b': ['q1']}
+q2 = {'a': ['q1'], 'b': ['q0']}
+M = {'a': ['M'], 'b': ['M']}
+se = {'q0': q0, 'q1': q1, 'q2': q2, 'M': M}
+inicial = 'q0'
+finais = ['q1', 'q2']
+
+
 # leitorg = LeitorG()
 # producoes, terminais, nTerminais = leitorg.ler()
 # g = Grammar(producoes,terminais,nTerminais)
@@ -64,8 +74,8 @@ finais = ['q1', 'q4', 'q5']
 # leitor = Leitor()
 # se, inicial, finais = leitor.ler()
 a = Automato(se, inicial, finais)
-a.determina()
-a.printAtomato()
+a.automataToER()
+# a.printAtomato()
 
 # a = Automato(se, inicial, finais)
 # a.determina()
