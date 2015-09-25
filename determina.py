@@ -202,20 +202,17 @@ class Automato:
     def automataToER(self):
         genericAutomata = self.genericAutomata()
         genericAux = copy.deepcopy(genericAutomata)
-
-        print(genericAutomata)
-        print(len(genericAutomata))
         x = len(genericAutomata)
         while(x>2):
-            #k = estado a ser removido
-            k, v = genericAutomata.popitem()
-            while(k == 'qi' or k == 'qf'):
-                genericAutomata[k] = v
-                k,v = genericAutomata.popitem()
-
+            for k, v in genericAutomata.items():
+                if(k != 'qi' and k!= 'qf'):
+                    del(genericAutomata[k])
+                    break
             #percorrendo dicionario para adequar
             for key, value in genericAux.items():
                 aux = {}
+                g = {}
+                extra = True
                 if key != k:
                     for alf, est in value.items():
                         R1, R2, R3, uniao = "", "", "", ""
@@ -224,6 +221,7 @@ class Automato:
                             for alfabetoAlcancadoPeloRem, estadosAlcancadosPeloRem in v.items():
                                 uniao = ""
                                 if estadosAlcancadosPeloRem in value.values() and k.split() != estadosAlcancadosPeloRem:
+                                    extra = False
                                     for uniaoK, uniaoV in value.items():
                                         if uniaoV == estadosAlcancadosPeloRem:
                                             uniao = "U("+str(uniaoK)+")"
@@ -236,11 +234,19 @@ class Automato:
                                     R3 = ""+str(alfabetoAlcancadoPeloRem)
                                     expressaoFinal = R1+R2+R3+uniao+")"
                                     aux[expressaoFinal] = estadofinal
-                                    genericAutomata[key] =aux
-                                print(genericAutomata)
+                                    genericAutomata[key] = aux
+
+                        else:
+                            g[alf] = est
+                if(extra==True):
+                    for chave, valor in g.items():
+                        aux[chave] = valor
+                genericAutomata[key] = aux
+                if key == k:
+                    del(genericAutomata[k])
             genericAux = copy.deepcopy(genericAutomata)
             x -= 1
-        print(genericAutomata)
+        self.printER(genericAutomata)
     def printAtomato(self):
         print('{:<8} {:<15} '.format('S', 'Transition'))
         for key, value in self.automato.items():
@@ -250,3 +256,14 @@ class Automato:
                 print('{!s:<8} {!s:<15} '.format('*'+''.join(key), value))
             else:    
                 print('{!s:<8} {!s:<15} '.format(key, value))
+
+    def printER(self,ex):
+        er = ''
+        print('Expressao Regular do automato: ')
+        for k, v in ex.items():
+            for key, value in v.items():
+                if value == 'qf'.split():
+                    er = key.replace('&' , '')
+
+        er = er.replace('.','')
+        print(er)

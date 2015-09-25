@@ -54,14 +54,20 @@ from leitorG import LeitorG
 #     }
 
 #Automata to ER
-q0 = {'a': ['q1'], 'b': ['q2']}
-q1 = {'a': ['q0'], 'b': ['q1']}
-q2 = {'a': ['q1'], 'b': ['q0']}
-M = {'a': ['M'], 'b': ['M']}
-se = {'q0': q0, 'q1': q1, 'q2': q2, 'M': M}
-inicial = 'q0'
-finais = ['q1', 'q2']
+# q0 = {'a': ['q1'], 'b': ['q2']}
+# q1 = {'a': ['q0'], 'b': ['q1']}
+# q2 = {'a': ['q1'], 'b': ['q0']}
+# M = {'a': ['M'], 'b': ['M']}
+# se = {'q0': q0, 'q1': q1, 'q2': q2, 'M': M}
+# inicial = 'q0'
+# finais = ['q1', 'q2']
 
+#
+q0 = {'a': ['q1']}
+q1 = {'a': ['q1']}
+se = {'q0': q0, 'q1': q1}
+inicial = 'q0'
+finais = ['q1']
 
 # leitorg = LeitorG()
 # producoes, terminais, nTerminais = leitorg.ler()
