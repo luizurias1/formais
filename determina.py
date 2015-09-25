@@ -201,6 +201,7 @@ class Automato:
 
     def automataToER(self):
         genericAutomata = self.genericAutomata()
+        print(genericAutomata)
         genericAux = copy.deepcopy(genericAutomata)
         x = len(genericAutomata)
         while(x>2):
@@ -215,29 +216,32 @@ class Automato:
                 extra = True
                 if key != k:
                     for alf, est in value.items():
-                        R1, R2, R3, uniao = "", "", "", ""
-                        if k in est:
-                            R1 = "("+str(alf)+"."
-                            for alfabetoAlcancadoPeloRem, estadosAlcancadosPeloRem in v.items():
-                                uniao = ""
-                                if estadosAlcancadosPeloRem in value.values() and k.split() != estadosAlcancadosPeloRem:
-                                    extra = False
-                                    for uniaoK, uniaoV in value.items():
-                                        if uniaoV == estadosAlcancadosPeloRem:
-                                            uniao = "U("+str(uniaoK)+")"
-                                if k.split() in v.values() and R2 == "":
-                                    for fechoK, fechoV in v.items():
-                                        if fechoV == k.split():
-                                            R2 = "("+str(fechoK)+")*."
-                                if estadosAlcancadosPeloRem != k.split():
-                                    estadofinal = estadosAlcancadosPeloRem
-                                    R3 = ""+str(alfabetoAlcancadoPeloRem)
-                                    expressaoFinal = R1+R2+R3+uniao+")"
-                                    aux[expressaoFinal] = estadofinal
-                                    genericAutomata[key] = aux
+                        R1, R2, R3, uniao, R21 = "", "", "", "", ""
+                        for array in est:
+                            if array == k:
+                                R1 = "("+str(alf)+"."
+                                for alfabetoAlcancadoPeloRem, estadosAlcancadosPeloRem in v.items():
+                                    uniao = ""
+                                    if estadosAlcancadosPeloRem in value.values() and k.split() != estadosAlcancadosPeloRem:
+                                        extra = False
+                                        for uniaoK, uniaoV in value.items():
+                                            if uniaoV == estadosAlcancadosPeloRem:
+                                                uniao = "U("+str(uniaoK)+")"
+                                    if k.split() in v.values() and R2 == "":
+                                        for fechoK, fechoV in v.items():
+                                            if fechoV == k.split():
+                                                    R21 += str(fechoK)+'U'
+                                        R2 = "("+R21+")*."
+                                    if estadosAlcancadosPeloRem != k.split():
+                                        estadofinal = estadosAlcancadosPeloRem
+                                        R3 = ""+str(alfabetoAlcancadoPeloRem)
+                                        expressaoFinal = R1+R2+R3+uniao+")"
+                                        aux[expressaoFinal] = estadofinal
+                                        genericAutomata[key] = aux
 
-                        else:
-                            g[alf] = est
+                            else:
+                                g[alf] = array.split()
+                                extra = True
                 if(extra==True):
                     for chave, valor in g.items():
                         aux[chave] = valor
@@ -263,7 +267,9 @@ class Automato:
         for k, v in ex.items():
             for key, value in v.items():
                 if value == 'qf'.split():
-                    er = key.replace('&' , '')
+                    er = key
 
-        er = er.replace('.','')
+        er = er.replace('&','')
+        er = er.replace('.', '')
+        er = er.replace('U)', ')')
         print(er)
