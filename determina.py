@@ -222,34 +222,46 @@ class Automato:
                                 R1 = "("+str(alf)+"."
                                 for alfabetoAlcancadoPeloRem, estadosAlcancadosPeloRem in v.items():
                                     uniao = ""
+                                    if estadosAlcancadosPeloRem in aux.values():
+                                        for keyAux, valueAux in aux.items():
+                                            if valueAux == estadosAlcancadosPeloRem:
+                                                chavedeletar = keyAux
+                                        del(aux[chavedeletar])
                                     if estadosAlcancadosPeloRem in value.values() and k.split() != estadosAlcancadosPeloRem:
-                                        extra = False
                                         for uniaoK, uniaoV in value.items():
                                             if uniaoV == estadosAlcancadosPeloRem:
-                                                uniao = "U("+str(uniaoK)+")"
+                                                uniao = "|("+str(uniaoK)+')'
                                     if k.split() in v.values() and R2 == "":
                                         for fechoK, fechoV in v.items():
                                             if fechoV == k.split():
-                                                    R21 += str(fechoK)+'U'
+                                                    R21 += str(fechoK)+'|'
                                         R2 = "("+R21+")*."
+                                        R2 = R2.replace('|)', ')')
                                     if estadosAlcancadosPeloRem != k.split():
                                         estadofinal = estadosAlcancadosPeloRem
-                                        R3 = ""+str(alfabetoAlcancadoPeloRem)
-                                        expressaoFinal = R1+R2+R3+uniao+")"
+                                        R3 = ""+str(alfabetoAlcancadoPeloRem)+")"
+                                        expressaoFinal = R1+R2+R3+uniao
                                         aux[expressaoFinal] = estadofinal
-                                        genericAutomata[key] = aux
+                                        # genericAutomata[key] = aux
 
                             else:
-                                g[alf] = array.split()
-                                extra = True
-                if(extra==True):
-                    for chave, valor in g.items():
-                        aux[chave] = valor
+                                # if array.split() not in aux.values():
+                                    aux[alf] = array.split()
+                                    # genericAutomata[key] = aux
+
                 genericAutomata[key] = aux
-                if key == k:
-                    del(genericAutomata[k])
+                if k == key:
+                    del (genericAutomata[key])
+                # if(extra==True):
+                #     for chave, valor in g.items():
+                #         aux[chave] = valor
+                # genericAutomata[key] = aux
+                # if key == k:
+                #     del(genericAutomata[k])
+            print(genericAutomata)
             genericAux = copy.deepcopy(genericAutomata)
             x -= 1
+        print(genericAutomata)
         self.printER(genericAutomata)
     def printAtomato(self):
         print('{:<8} {:<15} '.format('S', 'Transition'))
@@ -271,5 +283,4 @@ class Automato:
 
         er = er.replace('&','')
         er = er.replace('.', '')
-        er = er.replace('U)', ')')
         print(er)

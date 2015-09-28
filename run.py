@@ -35,7 +35,7 @@ from leitorG import LeitorG
 #----------------------------------------------------
 
 #Automata to grammar
-
+#
 # q0 = {'a': ['q1'], 'b': ['q2']}
 # q1 = {'a': ['q0'], 'b': ['q3']}
 # q2 = {'a': ['q3'], 'b': ['q0']}
@@ -54,20 +54,20 @@ from leitorG import LeitorG
 #     }
 
 #Automata to ER
-q1 = {'a': ['q2'], 'b': ['M']}
-q2 = {'a': ['q2'], 'b': ['q3']}
-q3 = {'a': ['q2'], 'b': ['q3']}
-se = {'q1': q1, 'q2': q2, 'q3': q3}
-inicial = 'q1'
-finais = ['q2']
+# q1 = {'a': ['q2'], 'b': ['M']}
+# q2 = {'a': ['q2'], 'b': ['q3']}
+# q3 = {'a': ['q2'], 'b': ['q3']}
+# se = {'q1': q1, 'q2': q2, 'q3': q3}
+# inicial = 'q1'
+# finais = ['q2']
 
-#
-# q0 = {'a': ['q1'], 'b': ['q2']}
-# q1 = {'a': ['q1'], 'b': ['M']}
-# q2 = {'a': ['M'], 'b': ['q2']}
-# se = {'q0': q0, 'q1': q1, 'q2': q2}
-# inicial = 'q0'
-# finais = ['q1','q2']
+# #
+q0 = {'a': ['q1'], 'b': ['q2']}
+q1 = {'a': ['q0'], 'b': ['q1']}
+q2 = {'a': ['q1'], 'b': ['q0']}
+se = {'q0': q0, 'q1': q1, 'q2': q2}
+inicial = 'q0'
+finais = ['q1','q2']
 
 # leitorg = LeitorG()
 # producoes, terminais, nTerminais = leitorg.ler()
