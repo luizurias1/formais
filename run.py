@@ -3,7 +3,6 @@ from leitor import Leitor
 from grammar import Grammar
 from leitorG import LeitorG
 
-
 #---------------------------------------------------
 # q0 = {0: ['q0','q1'], 1: ['q0']}
 # q1 = {0: ['q2'], 1: ['M']}
@@ -62,12 +61,12 @@ from leitorG import LeitorG
 # finais = ['q2']
 
 # #
-q0 = {'a': ['q1'], 'b': ['q2']}
-q1 = {'a': ['q0'], 'b': ['q1']}
-q2 = {'a': ['q1'], 'b': ['q0']}
-se = {'q0': q0, 'q1': q1, 'q2': q2}
-inicial = 'q0'
-finais = ['q1','q2']
+# q0 = {'a': ['q1'], 'b': ['q2']}
+# q1 = {'a': ['q0'], 'b': ['q1']}
+# q2 = {'a': ['q1'], 'b': ['q0']}
+# se = {'q0': q0, 'q1': q1, 'q2': q2}
+# inicial = 'q0'
+# finais = ['q1','q2']
 
 # leitorg = LeitorG()
 # producoes, terminais, nTerminais = leitorg.ler()
@@ -79,8 +78,8 @@ finais = ['q1','q2']
 
 # leitor = Leitor()
 # se, inicial, finais = leitor.ler()
-a = Automato(se, inicial, finais)
-a.automataToER()
+# a = Automato(se, inicial, finais)
+# a.automataToER()
 # a.printAtomato()
 
 # a = Automato(se, inicial, finais)

@@ -1,42 +1,77 @@
 __author__ = 'lucasmpalma and luizu'
 import copy
+
 class Automato:
 
     def __init__(self, states, inicial, finais):
         self.automato = states
-        self.d = states.copy()
+        self.d = copy.deepcopy(states)
         self.inicial = inicial
         self.finais = finais
+        self.fecho = {}
+        self.states = {}
 
     def getAlfabeto(self):
         aState = next (iter (self.automato.values()))
         alfabeto = aState.keys()
         return alfabeto
 
-    def atualizaEstados(self, dict):
-        for key, value in dict.items():
+    def atualizaEstados(self):
+        for key, value in self.d.items():
             naturalStates = self.automato.keys()
             if key not in naturalStates:
                 self.automato[key] = value
         return self.automato
 
     def criaEstado(self, v):
-        dict = {}
-        novo = ''
-        alfabeto = self.getAlfabeto()
-        for alf in alfabeto:
-            dict[alf] = []
-        for valor in v:
-            novo+=valor
-        for item in v:
-            state = self.automato.get(item)
-            for key , value in state.items():
-                texto = ''
-                for it in value:
-                    if it != 'M':
-                        texto = it
-                        dict[key].append(texto)
-        self.d[novo] = dict
+        if v == []:
+            atualizaEstados(self.d)
+        else:
+            dict = {}
+            novo = ''
+            jaTa = []
+            alfabeto = self.getAlfabeto()
+            for alf in alfabeto:
+                dict[alf] = []
+            for valor in v:
+                for key, value in self.states.items():
+                    if valor == value:
+                        for item in self.fecho[key]:
+                            if item not in jaTa:
+                                jaTa.append(item)
+                                novo += item
+            jaTa = []
+
+            for item in v:
+                state = self.automato.get(item)
+                for key , value in state.items():
+                    texto = ''
+                    for it in value:
+                        if it != 'M':
+                            texto = it
+                            if texto not in dict[key]:
+                                dict[key].append(texto)
+            fim = {}
+
+            for key, value in dict.items():
+                guard = fim[key] = []
+                jaTa = []
+                alone = []
+                for item in value:
+                    for chave, valor in self.states.items():
+                        if item == valor:
+                            if len(self.fecho[chave]) > 1:
+                                guard.append(item)
+                                for i in self.fecho[chave]:
+                                    jaTa.append(i)
+                            else:
+                                alone.append(item)
+
+                for s in alone:
+                        if s not in jaTa:
+                            guard.append(s)
+
+            self.d[novo] = fim.copy()
 
     def procuraEstados(self):
         st = []
@@ -78,9 +113,11 @@ class Automato:
             for item in value:
                 aux = sFecho[item]
                 for it in aux:
-                    value.append(it)
+                    if it not in value:
+                        value.append(it)
         for key, value in sFecho.items():
-            sFecho[key].append(key)
+            if key not in sFecho[key]:
+                sFecho[key].append(key)
         fe = {}
         for key, value in sFecho.items():
             fecho=''
@@ -90,60 +127,136 @@ class Automato:
         return sFecho, fe
 
     def atualizaAFND(self, fecho, states):
-        alfabeto = self.getAlfabeto()
-        chaves = states.keys()
-        if self.inicial in chaves:
-            aux = states[self.inicial]
-            self.inicial = aux
-        dt = {}
-        a = []        
+        # fecho = state -> F.E.C.H.O
+        # states = state -> FECHO
+        dicAux = {}
+        
         for key, value in states.items():
             if len(fecho[key]) > 1:
-                aux = self.automato[value] = {}
-                for item in alfabeto:
-                    if item != '&':
-                        aux[item] = []
-                        for k, v in fecho.items():
-                            if k == key:
-                                for it in v:
-                                    s = self.automato[it]
-                                    for chave, valor in s.items():
-                                        for i in valor:
-                                            if i not in aux[item]:
-                                                if i in chaves:
-                                                    a = states[i]
-                                                    if item == chave:
-                                                        aux[item].append(a)
-                                                elif len(a) == 0:
-                                                    aux[item].append('M')
-        for key, value in states.items():
-            if len(fecho[key]) > 1:
-                del(self.automato[key])
-        retorno = {}
-        novo = {}
-        for key, value in self.automato.items():
+                dicAux[value] = {}
+        
+        for alf in self.getAlfabeto():
+            if alf !='&':
+                for key, value in dicAux.items():
+                    value[alf] = []
+
+        for key, value in dicAux.items():
             for k, v in value.items():
-                if k != '&':
-                    novo[k] = v
-            retorno[key] = novo
-            novo = {}
-        self.automato = retorno
-        self.d = self.automato.copy()
+                for chave, valor in states.items():
+                    if valor == key:
+                        aux = fecho[chave]
+                        for item in aux:
+                            if len(fecho[item]) == 1:
+                                take = self.automato[item]
+                                for ch, vl in take.items():
+                                    for i in vl:
+                                        if i not in v and i != 'M' and k == ch:
+                                            if i in states.keys():
+                                                v.append(states[i])
+                                            else:
+                                                v.append(i)
+                            else:
+                                take = self.automato[item]
+                                for ch, vl in take.items():
+                                    for i in vl:
+                                        if i not in v and i != 'M' and k == ch:
+                                            t = states[i]
+                                            v.append(t)
+            for k, v in value.items():
+                if len(v) == 0:
+                    v.append('M')
+            
+        for key, value in self.automato.items():
+            alf = value.keys()
+            aux = []
+            for its in alf:
+                if its != '&':
+                    aux.append(its)
+            if key != 'M':
+                if key not in dicAux.keys() and len(fecho[key]) == 1:
+                    a = dicAux[key] = {c:value[c] for c in aux}
+                    for k, v in value.items():
+                        array = []
+                        for item in v:
+                            if item != 'M' and len(fecho[item]) > 1:
+                                array.append(states[item])
+                            else:
+                                array.append(item)
+                        for chave, valor in a.items():
+                            if k != '&' and chave == k:
+                                a[k] = array
+        
+        current_dict = {}
+        
+        for key, value in dicAux.items():
+            aux = []
+            st = self.automato.keys()
+            current_sub = current_dict[key] = {}
+            for k, v in value.items():
+                going = current_sub[k] = []
+                aux = []
+                for item in v:
+                    text = ''
+                    for m in st:
+                        if m in item:
+                            if m not in aux:
+                                aux.append(m)
+                    for it in item:
+                        text += it
+                        if text in st:
+                            if text not in aux:
+                                aux.append(text)
+                                text = ''
+                for i in aux:
+                    if i not in going:
+                        going.append(i)
+
+        finalDict = current_dict.copy()
+        sta = []
+        sa = ''
+       
+        for key, value in current_dict.items():
+            aux = finalDict[key]
+            for k, v in value.items():
+                moment = aux[k] = []
+                for item in v:
+                    if item != 'M':
+                        sta.append(item)
+                for chave, valor in fecho.items():
+                    if set(sta) == set(valor):
+                        guardar = states[chave]
+                        sta = []
+                        if guardar not in moment:
+                            moment.append(guardar)
+                sta = []
+                if moment == []:
+                    for item in v:
+                        if item != 'M':
+                            sa += item
+                            if sa in states.values():
+                                moment.append(sa)
+                                sa = ''
+                if moment == []:
+                    moment.append('M')
+
+        self.automato = finalDict.copy()
+        self.d = finalDict.copy()
 
     def determina(self):
         alfabeto = self.getAlfabeto()
         if '&' in alfabeto:
-            fecho, states = self.calculaFecho()
-            self.atualizaAFND(fecho, states)
+            self.fecho, self.states = self.calculaFecho()
+            self.atualizaAFND(self.fecho, self.states)
             self.procuraEstados()
             while len(self.automato) != len(self.d):
-                self.atualizaEstados(self.d)
+                self.atualizaEstados()
                 self.procuraEstados()
             return self.automato
-        else:   
+        else:
+            self.fecho, self.states = self.calculaFecho()   
             self.procuraEstados()
             while len(self.automato) != len(self.d):
-                self.atualizaEstados(self.d)
+                self.atualizaEstados()
                 self.procuraEstados()
             return self.automato
 
@@ -263,16 +376,17 @@ class Automato:
             x -= 1
         print(genericAutomata)
         self.printER(genericAutomata)
+    
     def printAtomato(self):
         print('{:<8} {:<15} '.format('S', 'Transition'))
         for key, value in self.automato.items():
-            if key == self.inicial:
+            if key == self.states[self.inicial]:
                 print('{!s:<8} {!s:<15} '.format('->'+''.join(key), value))
             elif key in self.finais:
                 print('{!s:<8} {!s:<15} '.format('*'+''.join(key), value))
             else:    
                 print('{!s:<8} {!s:<15} '.format(key, value))
-
+    
     def printER(self,ex):
         er = ''
         print('Expressao Regular do automato: ')
