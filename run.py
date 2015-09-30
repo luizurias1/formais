@@ -1,4 +1,4 @@
-from determina import Automato
+from automato import Automato
 from leitor import Leitor
 from grammar import Grammar
 from leitorG import LeitorG
