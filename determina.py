@@ -2,7 +2,15 @@ __author__ = 'lucasmpalma and luizu'
 import copy
 
 class Automato:
-
+    
+    '''
+    Construtor da classe automato
+    self.automato, dicionario com as transicoes e alfabeto
+    self.d, copia do dicionario par uso na comparacao na adicao de novos estados
+    self.inicial, estado inicial do AFD ou AFND
+    self.finais, conjunto dos estados aceitadores
+    self.fecho e self.states, em caso de AFND guardam a estrutura do calculo do fecho &
+    '''
     def __init__(self, states, inicial, finais):
         self.automato = states
         self.d = copy.deepcopy(states)
@@ -11,18 +19,31 @@ class Automato:
         self.fecho = {}
         self.states = {}
 
+    '''
+    Identifica o alfabeto do automato
+    @return, array com os elementos do alfabeto
+    '''
     def getAlfabeto(self):
         aState = next (iter (self.automato.values()))
         alfabeto = aState.keys()
+        
         return alfabeto
 
+    '''
+    Adiciona o novo estado encontrado na determinizacao ao dicionario de estados
+    @return o dicionario self.automato atualizado
+    '''
     def atualizaEstados(self):
         for key, value in self.d.items():
             naturalStates = self.automato.keys()
             if key not in naturalStates:
                 self.automato[key] = value
+        
         return self.automato
 
+    '''
+    Recebe um array com a configuracao de estados novos, cria um dicionario para ele
+    '''
     def criaEstado(self, v):
         if v == []:
             atualizaEstados(self.d)
@@ -73,13 +94,19 @@ class Automato:
 
             self.d[novo] = fim.copy()
 
+    '''
+    Realiza uma busca no dicionario de estados, procurando possivei novos estados
+    Se encontrado, chama criaEstado, para que se possa criar um novo dicionario
+    '''
     def procuraEstados(self):
         st = []
         ns = ''
         c = 0
+        
         for key, value in self.automato.items():
             if key not in st:
                 st.append(key)
+        
         for key, value in self.automato.items():
             for k, v in value.items():
                 newState =''
@@ -99,26 +126,39 @@ class Automato:
                         ns = ''
                         self.criaEstado(v)
 
+    '''
+    Uma vez Identificado a necessidade do calculo do fecho, o metodo
+    procura o conjunto de estados referentes ao fecho de cada um dos
+    estados do AFND.
+    @return sFecho, dicionario do fecho, CHAVE -> [E, S, T, A, D, O, S]
+    @return fe, dicionario do fecho, CHAVE -> [ESTADOS]
+    '''
     def calculaFecho(self):
         sFecho = {}
+        
         for key, value in self.automato.items():
             if key !='M':
                 sFecho[key] = []
+        
         for key, value in self.automato.items():
             for k, v in value.items():
                 for item in v:
                     if k == '&' and key != 'M' and item != 'M':
                         sFecho[key].append(item)
+        
         for key, value in sFecho.items():
             for item in value:
                 aux = sFecho[item]
                 for it in aux:
                     if it not in value:
                         value.append(it)
+        
         for key, value in sFecho.items():
             if key not in sFecho[key]:
                 sFecho[key].append(key)
+        
         fe = {}
+        
         for key, value in sFecho.items():
             fecho=''
             for item in value:
@@ -126,9 +166,11 @@ class Automato:
             fe[key]=fecho
         return sFecho, fe
 
+    '''
+    Atualiza o dicionario de estados com os novos estados, descubertos apos
+    o calculo do fecho em uma AFND com & transicoes
+    '''
     def atualizaAFND(self, fecho, states):
-        # fecho = state -> F.E.C.H.O
-        # states = state -> FECHO
         dicAux = {}
         
         for key, value in states.items():
@@ -242,6 +284,12 @@ class Automato:
         self.automato = finalDict.copy()
         self.d = finalDict.copy()
 
+    '''
+    Ordena a sequencia de metodos necessarios para a determinizacao, 
+    que varia de AFND para AFD, em um loop ate que nao hajam novos
+    estados para adicionar
+    @return, self.automato atualizado
+    '''
     def determina(self):
         alfabeto = self.getAlfabeto()
         if '&' in alfabeto:
@@ -260,6 +308,13 @@ class Automato:
                 self.procuraEstados()
             return self.automato
 
+    '''
+    Descricao
+    @return prod
+    @return terminais
+    @return nonTerminais
+    @return inicial
+    '''
     def automataToGrammar(self):
         nonTerminais = []
         terminais = []
@@ -288,6 +343,10 @@ class Automato:
         inicial = self.inicial
         return prod, terminais, nonTerminais, inicial
 
+    '''
+    Descricao
+    @ return genericAutomata
+    '''
     def genericAutomata(self):
         genericAutomata = copy.deepcopy(self.automato)
         #adiciona qi e aponta os finais para qf
@@ -312,6 +371,9 @@ class Automato:
             genericAutomata['qf'] = aux
         return genericAutomata
 
+    '''
+    Descricao
+    '''
     def automataToER(self):
         genericAutomata = self.genericAutomata()
         print(genericAutomata)
@@ -377,6 +439,10 @@ class Automato:
         print(genericAutomata)
         self.printER(genericAutomata)
     
+    '''
+    Metodo efetua um loop no dicionario de estados self.automato
+    printando os cada um dos estados e suas transicoes
+    '''
     def printAtomato(self):
         print('{:<8} {:<15} '.format('S', 'Transition'))
         for key, value in self.automato.items():
@@ -387,6 +453,9 @@ class Automato:
             else:    
                 print('{!s:<8} {!s:<15} '.format(key, value))
     
+    '''
+    Descricao
+    '''
     def printER(self,ex):
         er = ''
         print('Expressao Regular do automato: ')
