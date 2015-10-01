@@ -1,5 +1,6 @@
 __author__ = 'lucasmpalma and luizu'
 import copy
+from collections import Counter
 
 class Automato:
     
@@ -354,6 +355,8 @@ class Automato:
                         prod[k].append(aux)
         nonTerminais = [x.upper() for x in nonTerminais]
         inicial = self.inicial
+
+        self.writeGrammarToFile(prod,inicial,terminais,nonTerminais)
         return prod, terminais, nonTerminais, inicial
 
     '''
@@ -486,6 +489,15 @@ class Automato:
         er = er.replace('.', '')
         print(er)
         return er
+
+    def writeGrammarToFile(self,prod,ini,t,n):
+        f = open('testes/grammar.out', 'w')
+        f.write('Gramatica do automato: \n')
+        f.write('Estado inicial: '+ ini+'\n')
+        f.write('Terminais: '+str(t)+'\n')
+        f.write('Nao terminais: '+str(n)+'\n')
+        f.write('Producoes: '+str(prod)+'\n')
+
 
     def getDictAutomato(self):
         return self.automato
