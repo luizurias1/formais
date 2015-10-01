@@ -4,14 +4,14 @@ from grammar import Grammar
 from leitorG import LeitorG
 
 #---------------------------------------------------
-# q0 = {0: ['q0','q1'], 1: ['q0']}
-# q1 = {0: ['q2'], 1: ['M']}
-# q2 = {0: ['M'], 1: ['q3']}
-# q3 = {0: ['M'], 1: ['M']}
-# M = {0: ['M'], 1: ['M']}
-# se = {'q0': q0, 'q1': q1, 'q2': q2, 'q3': q3, 'M': M}
-# inicial = 'q0'
-# finais = ['q3']
+q0 = {0: ['q0','q1'], 1: ['q0']}
+q1 = {0: ['q2'], 1: ['M']}
+q2 = {0: ['M'], 1: ['q3']}
+q3 = {0: ['M'], 1: ['M']}
+M = {0: ['M'], 1: ['M']}
+se = {'q0': q0, 'q1': q1, 'q2': q2, 'q3': q3, 'M': M}
+inicial = 'q0'
+finais = ['q3']
 # -------------------------------------------------
 # q0 = {'a': ['M'], 'b': ['M'], '&': ['q1', 'q3']}
 # q1 = {'a': ['q2'], 'b': ['q1'], '&': ['M']}
@@ -60,13 +60,15 @@ from leitorG import LeitorG
 # inicial = 'q1'
 # finais = ['q2']
 
-# #
+#Comeca e termina com a mesma letra
 # q0 = {'a': ['q1'], 'b': ['q2']}
-# q1 = {'a': ['q0'], 'b': ['q1']}
-# q2 = {'a': ['q1'], 'b': ['q0']}
-# se = {'q0': q0, 'q1': q1, 'q2': q2}
+# q1 = {'a': ['q1'], 'b': ['q3']}
+# q2 = {'a': ['q4'], 'b': ['q2']}
+# q3 = {'a': ['q1'], 'b': ['q3']}
+# q4 = {'a': ['q4'], 'b': ['q2']}
+# se = {'q0' : q0, 'q1': q1, 'q2': q2, 'q3': q3, 'q4': q4}
 # inicial = 'q0'
-# finais = ['q1','q2']
+# finais = ['q1', 'q2']
 
 # leitorg = LeitorG()
 # producoes, terminais, nTerminais = leitorg.ler()
@@ -82,8 +84,10 @@ from leitorG import LeitorG
 # a.automataToER()
 # a.printAtomato()
 
-# a = Automato(se, inicial, finais)
-# a.determina()
+a = Automato(se, inicial, finais)
+a.automataToER()
+# a.printAtomato()
+# a.automataToER()
 # a.printAtomato()
 # prod, termi, non, inici = a.automataToGrammar()
 # print(prod)

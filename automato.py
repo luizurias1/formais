@@ -41,12 +41,23 @@ class Automato:
         
         return self.automato
 
+    def organizaAutomato(self):
+        help = copy.deepcopy(self.automato)
+        for k, v in help.items():
+            aux= self.automato[k]
+            for key, value in v.items():
+                string = ''
+                if len(value) > 1:
+                    for array in value:
+                        string+=array
+                        aux[key] = string.split()
+
     '''
     Recebe um array com a configuracao de estados novos, cria um dicionario para ele
     '''
     def criaEstado(self, v):
         if v == []:
-            atualizaEstados(self.d)
+            self.atualizaEstados(self.d)
         else:
             dict = {}
             novo = ''
@@ -299,6 +310,7 @@ class Automato:
             while len(self.automato) != len(self.d):
                 self.atualizaEstados()
                 self.procuraEstados()
+            self.organizaAutomato()
             return self.automato
         else:
             self.fecho, self.states = self.calculaFecho()   
@@ -306,10 +318,11 @@ class Automato:
             while len(self.automato) != len(self.d):
                 self.atualizaEstados()
                 self.procuraEstados()
+            self.organizaAutomato()
             return self.automato
 
     '''
-    Descricao
+    Metodo que gera a gramatica do automato criado pelo construtor.
     @return prod
     @return terminais
     @return nonTerminais
@@ -344,11 +357,19 @@ class Automato:
         return prod, terminais, nonTerminais, inicial
 
     '''
-    Descricao
+    Metodo que transforma o objeto automato em um automato generico.
     @ return genericAutomata
     '''
     def genericAutomata(self):
-        genericAutomata = copy.deepcopy(self.automato)
+        generic = copy.deepcopy(self.automato)
+        for k, v in self.automato.items():
+            for key, value in v.items():
+                if len(value) > 1:
+                    generic = self.determina()
+                    break
+                break
+        genericAutomata = copy.deepcopy(generic)
+
         #adiciona qi e aponta os finais para qf
         for key, value in self.automato.items():
             aux = {}
@@ -372,7 +393,8 @@ class Automato:
         return genericAutomata
 
     '''
-    Descricao
+    Metodo que converte o automato da classe em uma expressao regular
+    @return a expressao regular do automato
     '''
     def automataToER(self):
         genericAutomata = self.genericAutomata()
@@ -384,19 +406,19 @@ class Automato:
                 if(k != 'qi' and k!= 'qf'):
                     del(genericAutomata[k])
                     break
+
             #percorrendo dicionario para adequar
             for key, value in genericAux.items():
                 aux = {}
                 g = {}
-                extra = True
                 if key != k:
                     for alf, est in value.items():
-                        R1, R2, R3, uniao, R21 = "", "", "", "", ""
+                        R1, R2, R3, uniao, R21, p1, p2 = "", "", "", "", "",'',''
                         for array in est:
                             if array == k:
                                 R1 = "("+str(alf)+"."
                                 for alfabetoAlcancadoPeloRem, estadosAlcancadosPeloRem in v.items():
-                                    uniao = ""
+                                    uniao, p1,p2 = "",'',''
                                     if estadosAlcancadosPeloRem in aux.values():
                                         for keyAux, valueAux in aux.items():
                                             if valueAux == estadosAlcancadosPeloRem:
@@ -406,6 +428,8 @@ class Automato:
                                         for uniaoK, uniaoV in value.items():
                                             if uniaoV == estadosAlcancadosPeloRem:
                                                 uniao = "|("+str(uniaoK)+')'
+                                        p1 = '('
+                                        p2 = ')'
                                     if k.split() in v.values() and R2 == "":
                                         for fechoK, fechoV in v.items():
                                             if fechoV == k.split():
@@ -415,30 +439,23 @@ class Automato:
                                     if estadosAlcancadosPeloRem != k.split():
                                         estadofinal = estadosAlcancadosPeloRem
                                         R3 = ""+str(alfabetoAlcancadoPeloRem)+")"
-                                        expressaoFinal = R1+R2+R3+uniao
+                                        expressaoFinal = p1+R1+R2+R3+uniao+p2
                                         aux[expressaoFinal] = estadofinal
-                                        # genericAutomata[key] = aux
 
                             else:
-                                # if array.split() not in aux.values():
+                                if array.split() not in aux.values():
                                     aux[alf] = array.split()
-                                    # genericAutomata[key] = aux
 
                 genericAutomata[key] = aux
                 if k == key:
                     del (genericAutomata[key])
-                # if(extra==True):
-                #     for chave, valor in g.items():
-                #         aux[chave] = valor
-                # genericAutomata[key] = aux
-                # if key == k:
-                #     del(genericAutomata[k])
             print(genericAutomata)
             genericAux = copy.deepcopy(genericAutomata)
             x -= 1
         print(genericAutomata)
-        self.printER(genericAutomata)
-    
+        er = self.printER(genericAutomata)
+        return er
+
     '''
     Metodo efetua um loop no dicionario de estados self.automato
     printando os cada um dos estados e suas transicoes
@@ -454,7 +471,8 @@ class Automato:
                 print('{!s:<8} {!s:<15} '.format(key, value))
     
     '''
-    Descricao
+    Metodo que recebe como parametro o automato reduzido e imprime sua expressao regular
+    @:return a expressao regular
     '''
     def printER(self,ex):
         er = ''
@@ -467,3 +485,13 @@ class Automato:
         er = er.replace('&','')
         er = er.replace('.', '')
         print(er)
+        return er
+
+    def getDictAutomato(self):
+        return self.automato
+
+    def getInicial(self):
+        return self.inicial
+
+    def getFinais(self):
+        return self.finais
