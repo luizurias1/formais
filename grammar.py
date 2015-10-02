@@ -1,11 +1,11 @@
 __author__ = 'luizu'
-
 class Grammar:
 
-    def __init__(self,producoes,terminais,nonTerminais):
+    def __init__(self,producoes,terminais,nonTerminais,ini):
         self.producoes = producoes
         self.terminais = terminais
         self.nonTerminais = nonTerminais
+        self.ini = ini
 
     def initEstados(self):
         estadosAutomato = []
@@ -49,4 +49,23 @@ class Grammar:
                 for item in self.terminais:
                     test[item] = ['M']
                 s[key] = test
-        return s
+
+        # a = Automato(s,self.ini,['F'])
+        # a.writeAutomataToFile()
+        return s, self.ini,['F']
+
+    def writeGrammarToFile(self):
+        string = ''
+        for key, value in self.producoes.items():
+            right = ''
+            for array in value:
+                right += str(array) + '|'
+            string+=str(key.upper()) + ' -> '+ right +'\n'
+
+        print(string)
+        f = open('testes/grammar.out', 'w')
+        f.write('Gramatica do automato: \n')
+        f.write('Estado inicial: '+ self.ini.upper()+'\n')
+        f.write('Terminais: '+str(self.terminais)+'\n')
+        f.write('Nao terminais: '+str(self.nonTerminais)+'\n')
+        f.write('Producoes: '+'\n'+string+'\n')

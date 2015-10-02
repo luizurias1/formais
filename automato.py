@@ -1,6 +1,5 @@
 __author__ = 'lucasmpalma and luizu'
 import copy
-from collections import Counter
 
 class Automato:
     
@@ -356,8 +355,7 @@ class Automato:
         nonTerminais = [x.upper() for x in nonTerminais]
         inicial = self.inicial
 
-        self.writeGrammarToFile(prod,inicial,terminais,nonTerminais)
-        return prod, terminais, nonTerminais, inicial
+        return prod,terminais,nonTerminais,inicial
 
     '''
     Metodo que transforma o objeto automato em um automato generico.
@@ -409,7 +407,7 @@ class Automato:
                 if(k != 'qi' and k!= 'qf'):
                     del(genericAutomata[k])
                     break
-
+            print('Estado a ser removido: '+str(k))
             #percorrendo dicionario para adequar
             for key, value in genericAux.items():
                 aux = {}
@@ -490,14 +488,17 @@ class Automato:
         print(er)
         return er
 
-    def writeGrammarToFile(self,prod,ini,t,n):
-        f = open('testes/grammar.out', 'w')
-        f.write('Gramatica do automato: \n')
-        f.write('Estado inicial: '+ ini+'\n')
-        f.write('Terminais: '+str(t)+'\n')
-        f.write('Nao terminais: '+str(n)+'\n')
-        f.write('Producoes: '+str(prod)+'\n')
-
+    def writeAutomataToFile(self):
+        f = open('testes/automata.out', 'w')
+        f.write('{:<8} {:<15} '.format('S', 'Transition'))
+        for key, value in self.automato.items():
+            if key\
+                    == self.inicial:
+                f.write('\n'+'{!s:<8} {!s:<15} '.format('->'+''.join(key), value))
+            elif key in self.finais:
+                f.write('\n'+'{!s:<8} {!s:<15} '.format('*'+''.join(key), value))
+            else:
+                f.write('\n'+'{!s:<8} {!s:<15} '.format(key, value))
 
     def getDictAutomato(self):
         return self.automato

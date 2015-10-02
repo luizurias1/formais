@@ -3,15 +3,15 @@ from leitor import Leitor
 from grammar import Grammar
 from leitorG import LeitorG
 
-#---------------------------------------------------
-# q0 = {0: ['q0','q1'], 1: ['q0']}
-# q1 = {0: ['q2'], 1: ['M']}
-# q2 = {0: ['M'], 1: ['q3']}
-# q3 = {0: ['M'], 1: ['M']}
-# M = {0: ['M'], 1: ['M']}
-# se = {'q0': q0, 'q1': q1, 'q2': q2, 'q3': q3, 'M': M}
-# inicial = 'q0'
-# finais = ['q3']
+# ---------------------------------------------------
+q0 = {0: ['q0','q1'], 1: ['q0']}
+q1 = {0: ['q2'], 1: ['M']}
+q2 = {0: ['M'], 1: ['q3']}
+q3 = {0: ['M'], 1: ['M']}
+M = {0: ['M'], 1: ['M']}
+se = {'q0': q0, 'q1': q1, 'q2': q2, 'q3': q3, 'M': M}
+inicial = 'q0'
+finais = ['q3']
 # -------------------------------------------------
 # q0 = {'a': ['M'], 'b': ['M'], '&': ['q1', 'q3']}
 # q1 = {'a': ['q2'], 'b': ['q1'], '&': ['M']}
@@ -35,14 +35,14 @@ from leitorG import LeitorG
 
 #Automata to grammar
 #
-q0 = {'a': ['q1'], 'b': ['q2']}
-q1 = {'a': ['q0'], 'b': ['q3']}
-q2 = {'a': ['q3'], 'b': ['q0']}
-q3 = {'a': ['q2'], 'b': ['q1']}
-M = {'a': ['M'], 'b': ['M']}
-se = {'q0': q0, 'q1': q1, 'q2': q2, 'q3': q3, 'M': M}
-inicial = 'q0'
-finais = ['q1']
+# q0 = {'a': ['q1'], 'b': ['q2']}
+# q1 = {'a': ['q0'], 'b': ['q3']}
+# q2 = {'a': ['q3'], 'b': ['q0']}
+# q3 = {'a': ['q2'], 'b': ['q1']}
+# M = {'a': ['M'], 'b': ['M']}
+# se = {'q0': q0, 'q1': q1, 'q2': q2, 'q3': q3, 'M': M}
+# inicial = 'q0'
+# finais = ['q1']
 
 # terminal = ['a', 'b']
 # nTerminal = ['A', 'B', 'S']
@@ -51,7 +51,7 @@ finais = ['q1']
 #     'A': ['aA', 'bA', 'a'],
 #     'B': ['bB', 'aB', 'b']
 #     }
-
+# inicial = 'S'
 #Automata to ER
 # q1 = {'a': ['q2'], 'b': ['M']}
 # q2 = {'a': ['q2'], 'b': ['q3']}
@@ -72,7 +72,8 @@ finais = ['q1']
 
 # leitorg = LeitorG()
 # producoes, terminais, nTerminais = leitorg.ler()
-# g = Grammar(producoes,terminais,nTerminais)
+# g = Grammar(producoes,terminal,nTerminal, inicial)
+# g.convertGtoAF()
 # automato = g.convertGtoAF()
 # a = Automato(automato)
 # print(automato)
@@ -85,11 +86,8 @@ finais = ['q1']
 # a.printAtomato()
 
 a = Automato(se, inicial, finais)
-asd, s, d,e = a.automataToGrammar()
-print(asd)
-print(s)
-print(d)
-print(e)
+a.determina()
+a.writeAutomataToFile()
 
 # a.printAtomato()
 # a.automataToER()
