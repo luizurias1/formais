@@ -476,7 +476,6 @@ class Automato:
     '''
     def printER(self,ex):
         er = ''
-        print('Expressao Regular do automato: ')
         for k, v in ex.items():
             for key, value in v.items():
                 if value == 'qf'.split():
@@ -484,7 +483,6 @@ class Automato:
 
         er = er.replace('&','')
         er = er.replace('.', '')
-        print(er)
         return er
 
     def writeAutomataToFile(self, fileName):
@@ -499,6 +497,8 @@ class Automato:
                 f.write('\n'+'{!s:<8} {!s:<15} '.format('*'+''.join(key), value))
             else:
                 f.write('\n'+'{!s:<8} {!s:<15} '.format(key, value))
+
+        f.close()
 
     def getDictAutomato(self):
         return self.automato

@@ -10,6 +10,7 @@ class LeitorG:
     def ler(self):
         file = open('testes/'+self.fileName, 'r')
         dict = {}
+        ini = ''
         terminais = []
         for line in file:
             for world in line:

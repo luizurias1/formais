@@ -62,8 +62,6 @@ class Grammar:
                 right += str(array) + '|'
             string+=str(key.upper()) + ' -> '+ right +'\n'
 
-        print(string)
-        print('testes/grammar.out', 'w')
         print('Gramatica do automato: \n')
         print('Estado inicial: '+ self.ini.upper()+'\n')
         print('Terminais: '+str(self.terminais)+'\n')
@@ -78,12 +76,12 @@ class Grammar:
                 right += str(array) + '|'
             string+=str(key.upper()) + ' -> '+ right +'\n'
 
-        print(string)
         file = file.replace('.in', '')
-        print(file)
         f = open('testes/'+file+'.out', 'w')
         f.write('Gramatica do automato: \n')
         f.write('Estado inicial: '+ self.ini.upper()+'\n')
         f.write('Terminais: '+str(self.terminais)+'\n')
         f.write('Nao terminais: '+str(self.nonTerminais)+'\n')
         f.write('Producoes: '+'\n'+string+'\n')
+        f.close()
+
