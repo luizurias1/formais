@@ -1,0 +1,5 @@
+K = {q0, q1, q2, q3, q4, q5, M}
+E = (a, b, &)
+S = afnd2.json
+I = q0
+F = {q1, q4, q5}
