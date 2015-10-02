@@ -1,0 +1,10 @@
+Gramatica do automato: 
+Estado inicial: Q0
+Terminais: ['b', 'a']
+Nao terminais: ['Q1', 'Q2', 'Q0', 'Q3']
+Producoes: 
+Q1 -> bQ3|aQ0|
+Q2 -> bQ0|aQ3|
+Q3 -> b|bQ1|aQ2|
+Q0 -> bQ2|a|aQ1|
+
