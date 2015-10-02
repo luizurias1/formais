@@ -7,7 +7,7 @@ class LeitorEr:
         pass
 
     def ler(self):
-        file = open('testes/'+self.fileName, 'r')
+        file = open('../testes/'+self.fileName, 'r')
         expression = ''
         for line in file:
             for element in line:

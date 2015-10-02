@@ -8,7 +8,7 @@ class LeitorG:
         pass
 
     def ler(self):
-        file = open('testes/'+self.fileName, 'r')
+        file = open('../testes/'+self.fileName, 'r')
         dict = {}
         ini = ''
         terminais = []
@@ -35,7 +35,7 @@ class LeitorG:
         fileName = ''
         for element in line:
             if element == '\n':
-                with open('testes/'+fileName) as data_file:
+                with open('../testes/'+fileName) as data_file:
                     data = json.load(data_file)
                     for key, value in gramatica.items():
                         aux = data[key]

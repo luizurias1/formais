@@ -77,7 +77,7 @@ class Grammar:
             string+=str(key.upper()) + ' -> '+ right +'\n'
 
         file = file.replace('.in', '')
-        f = open('testes/'+file+'.out', 'w')
+        f = open('../testes/'+file+'.out', 'w')
         f.write('Gramatica do automato: \n')
         f.write('Estado inicial: '+ self.ini.upper()+'\n')
         f.write('Terminais: '+str(self.terminais)+'\n')

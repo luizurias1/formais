@@ -201,7 +201,7 @@ class Er:
 
     def writeERToFile(self,file):
         file = file.replace('.in', '')
-        f = open('testes/'+file+'.out', 'w')
+        f = open('../testes/'+file+'.out', 'w')
         f.write('Expressao Regular: \n'+self.expression)
         f.close()
 

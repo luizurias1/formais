@@ -332,26 +332,39 @@ class Automato:
         nonTerminais = []
         terminais = []
         prod = {}
-        for k, v in self.d.items():
+        morto = []
+        # self.determina()
+        for k, v in self.automato.items():
             if k != 'M':
-                nonTerminais.append(k)
-            for key, value in v.items():
-                if key not in terminais:
-                    terminais.append(key)
+                for key, value in v.items():
+                    if 'M'.split() not in value:
+                        if k not in nonTerminais:
+                            nonTerminais.append(k)
+                    if key not in terminais:
+                        terminais.append(key)
+                    if all(x == 'M'.split() for x in v.values()):
+                        morto.append(k)
+
+        for abc in nonTerminais:
+            if abc in morto:
+                nonTerminais.remove(abc)
         for a in nonTerminais:
-            prod[a] = []
-        for k, v in self.d.items():
+            if a not in morto:
+                prod[a] = []
+        for k, v in self.automato.items():
             if k!= 'M':
                 for key, value in v.items():
-                    finale = ''.join(value)
-                    if finale in self.finais:
-                        aux = ''.join(key)
-                        prod[k].append(aux)
-                        aux = ''.join(key)+(''.join(value)).upper()
-                        prod[k].append(aux)
-                    else:
-                        aux = ''.join(key)+(''.join(value)).upper()
-                        prod[k].append(aux)
+                    if value != 'M'.split():
+                        finale = ''.join(value)
+                        if finale in self.finais:
+                            aux = ''.join(key)
+                            prod[k].append(aux)
+                            if finale not in morto:
+                                aux = ''.join(key)+(''.join(value)).upper()
+                                prod[k].append(aux)
+                        elif finale not in morto:
+                            aux = ''.join(key)+(''.join(value)).upper()
+                            prod[k].append(aux)
         nonTerminais = [x.upper() for x in nonTerminais]
         inicial = self.inicial
 
@@ -487,7 +500,7 @@ class Automato:
 
     def writeAutomataToFile(self, fileName):
         fileName = fileName.replace('.in', '')
-        f = open('testes/'+fileName+'.out', 'w')
+        f = open('../testes/'+fileName+'.out', 'w')
         f.write('{:<8} {:<15} '.format('S', 'Transition'))
         for key, value in self.automato.items():
             if key\

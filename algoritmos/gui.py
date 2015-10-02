@@ -1,7 +1,7 @@
-import Tkinter as Tk
+import tkinter as Tk
+from tkinter import ttk
 from leitor import Leitor
 from automato import Automato
-import ttk
 from automato import Automato
 from leitor import Leitor
 from grammar import Grammar
@@ -47,27 +47,22 @@ def entradaAutomatoER():
 
 def clicked1():
     input = entrytext.get()
-    print input
     determiniza(input)
 
 def clicked2():
     input = entrytext.get()
-    print input
     automatoGramatica(input)
 
 def clicked3():
     input = entrytext.get()
-    print input
     gramaticaAutomato(input)
 
 def clicked4():
     input = entrytext.get()
-    print input
     ERAutomato(input)
 
 def clicked5():
     input = entrytext.get()
-    print input
     automatoER(input)
 
 def automatoGramatica(input):
@@ -81,7 +76,7 @@ def automatoGramatica(input):
     g.writeGrammarToFile(input)
 
     input = input.replace('.in', '')
-    data_file = open('testes/'+input+'.out')
+    data_file = open('../testes/'+input+'.out')
     data = data_file.read()
     data_file.close()
     test = Tk.Tk()
@@ -99,7 +94,7 @@ def gramaticaAutomato(input):
     a.writeAutomataToFile(input)
 
     input = input.replace('.in', '')
-    data_file = open('testes/'+input+'.out')
+    data_file = open('../testes/'+input+'.out')
     data = data_file.read()
     data_file.close()
     test = Tk.Tk()
@@ -117,7 +112,7 @@ def ERAutomato(input):
     a.writeAutomataToFile(input)
 
     input = input.replace('.in', '')
-    data_file = open('testes/'+input+'.out')
+    data_file = open('../testes/'+input+'.out')
     data = data_file.read()
     data_file.close()
     test = Tk.Tk()
@@ -135,7 +130,7 @@ def automatoER(input):
     expressao.writeERToFile(input)
 
     input = input.replace('.in', '')
-    data_file = open('testes/'+input+'.out')
+    data_file = open('../testes/'+input+'.out')
     data = data_file.read()
     data_file.close()
     test = Tk.Tk()
@@ -152,7 +147,7 @@ def determiniza(args):
     a.writeAutomataToFile(input)
 
     input = input.replace('.in', '')
-    data_file = open('testes/'+input+'.out')
+    data_file = open('../testes/'+input+'.out')
     data = data_file.read()
     data_file.close()
     test = Tk.Tk()
