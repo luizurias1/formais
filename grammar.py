@@ -54,7 +54,7 @@ class Grammar:
         # a.writeAutomataToFile()
         return s, self.ini,['F']
 
-    def writeGrammarToFile(self):
+    def printGrammar(self):
         string = ''
         for key, value in self.producoes.items():
             right = ''
@@ -63,7 +63,25 @@ class Grammar:
             string+=str(key.upper()) + ' -> '+ right +'\n'
 
         print(string)
-        f = open('testes/grammar.out', 'w')
+        print('testes/grammar.out', 'w')
+        print('Gramatica do automato: \n')
+        print('Estado inicial: '+ self.ini.upper()+'\n')
+        print('Terminais: '+str(self.terminais)+'\n')
+        print('Nao terminais: '+str(self.nonTerminais)+'\n')
+        print('Producoes: '+'\n'+string+'\n')
+
+    def writeGrammarToFile(self,file):
+        string = ''
+        for key, value in self.producoes.items():
+            right = ''
+            for array in value:
+                right += str(array) + '|'
+            string+=str(key.upper()) + ' -> '+ right +'\n'
+
+        print(string)
+        file = file.replace('.in', '')
+        print(file)
+        f = open('testes/'+file+'.out', 'w')
         f.write('Gramatica do automato: \n')
         f.write('Estado inicial: '+ self.ini.upper()+'\n')
         f.write('Terminais: '+str(self.terminais)+'\n')

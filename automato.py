@@ -367,8 +367,7 @@ class Automato:
             for key, value in v.items():
                 if len(value) > 1:
                     generic = self.determina()
-                    break
-                break
+
         genericAutomata = copy.deepcopy(generic)
 
         #adiciona qi e aponta os finais para qf
@@ -464,7 +463,7 @@ class Automato:
     def printAtomato(self):
         print('{:<8} {:<15} '.format('S', 'Transition'))
         for key, value in self.automato.items():
-            if key == self.states[self.inicial]:
+            if key == self.inicial:
                 print('{!s:<8} {!s:<15} '.format('->'+''.join(key), value))
             elif key in self.finais:
                 print('{!s:<8} {!s:<15} '.format('*'+''.join(key), value))
@@ -488,8 +487,9 @@ class Automato:
         print(er)
         return er
 
-    def writeAutomataToFile(self):
-        f = open('testes/automata.out', 'w')
+    def writeAutomataToFile(self, fileName):
+        fileName = fileName.replace('.in', '')
+        f = open('testes/'+fileName+'.out', 'w')
         f.write('{:<8} {:<15} '.format('S', 'Transition'))
         for key, value in self.automato.items():
             if key\

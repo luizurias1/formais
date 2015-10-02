@@ -2,12 +2,13 @@ import json
 
 class Leitor :
 
-    def __init__(self):
+    def __init__(self, fileName):
         self.rejected = ['U', 'E', 'K', 'S', ' ', '=', '{', '}', ',', '(', ')', '[', ']', '>', 'I', 'F']
+        self.fileName = fileName
         pass
 
     def ler(self):
-        file = open('entrada', 'r')
+        file = open('testes/'+self.fileName, 'r')
         dict = {}
         transition = []
         finais = []
@@ -48,7 +49,7 @@ class Leitor :
         fileName = ''
         for element in line:
             if element == '\n':
-                with open(fileName) as data_file:
+                with open('testes/'+fileName) as data_file:
                     data = json.load(data_file)
                     for key, value in dict.items():
                         for k, v in value.items():
