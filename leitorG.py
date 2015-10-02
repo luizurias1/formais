@@ -1,13 +1,15 @@
+__author__ = 'lucasmpalma'
 import json
 
 class LeitorG:
 
-    def  __init__(self):
+    def  __init__(self, fileName):
         self.rejected = ['', 'P', 'N', 'T', ' ', '=', '{', '}', ',', '(', ')', '[', ']', '>']
+        self.fileName = fileName
         pass
 
     def ler(self):
-        file = open('entradaG.txt', 'r')
+        file = open(self.fileName, 'r')
         dict = {}
         terminais = []
         for line in file:

@@ -1,13 +1,15 @@
+__author__ = 'lucasmpalma'
 import json
 
 class Leitor :
 
-    def __init__(self):
+    def __init__(self, fileName):
         self.rejected = ['U', 'E', 'K', 'S', ' ', '=', '{', '}', ',', '(', ')', '[', ']', '>', 'I', 'F']
+        self.fileName = fileName
         pass
 
     def ler(self):
-        file = open('entrada', 'r')
+        file = open(self.fileName, 'r')
         dict = {}
         transition = []
         finais = []
