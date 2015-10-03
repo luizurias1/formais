@@ -1,6 +1,0 @@
-K = {q0, q1, q2, q3, M}
-E = (0,1)
-S = afnd1.json
-I = q0
-F = {q3}
-
