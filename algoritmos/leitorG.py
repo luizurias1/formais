@@ -51,9 +51,10 @@ class LeitorG:
         gramatica = {}
         for element in line:
             if element == ',' or element == '}':
-                nts.append(nt)
-                gramatica[nt] = []
-                nt = ''
+                if element != '':
+                    nts.append(nt)
+                    gramatica[nt] = []
+                    nt = ''
             if element not in self.rejected:
                 nt += element
         return nts, gramatica
