@@ -1,15 +1,5 @@
 __author__ = 'lucasmpalma and luizu'
 from automato import Automato
-# expression = '(a.(a|b))'
-# expression = '((a)*)'
-# expression = '(a.b)'
-# expression = '((a|b)*)'
-# expression = '((a.b)*)'
-# expression = '(a|(b|c)*)'
-# expression = '(a.((a|b)*))'
-# expression = '(((a|b)*) . a)'
-# expression = '(a.((a|b)*).a)'
-# alfabeto = ['a','b']
 
 class Er:
 
@@ -204,9 +194,3 @@ class Er:
         f = open('../testes/'+file+'.out', 'w')
         f.write('Expressao Regular: \n'+self.expression)
         f.close()
-
-# e = Er(expression, alfabeto)
-# a = e.erToAutomato()
-# a.printAtomato()
-# print(a.getInicial())
-# print(a.getFinais())
