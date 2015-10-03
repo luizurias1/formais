@@ -1,3 +1,4 @@
+__author__ = 'lucasmpalma and luizu'
 import tkinter as Tk
 from tkinter import ttk
 from leitor import Leitor

@@ -1,4 +1,4 @@
-__author__ = 'luizu'
+__author__ = 'lucasmpalma and luizu'
 class Grammar:
 
     def __init__(self,producoes,terminais,nonTerminais,ini):

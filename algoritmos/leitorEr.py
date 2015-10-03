@@ -1,4 +1,4 @@
-__author__ = 'lucasmpalma'
+__author__ = 'lucasmpalma and luizu'
 
 class LeitorEr:
 

@@ -1,3 +1,4 @@
+__author__ = 'lucasmpalma and luizu'
 import json
 
 class Leitor :

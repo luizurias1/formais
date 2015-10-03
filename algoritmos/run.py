@@ -1,3 +1,4 @@
+__author__ = 'lucasmpalma and luizu'
 from automato import Automato
 from leitor import Leitor
 from grammar import Grammar
