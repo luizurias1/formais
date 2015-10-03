@@ -1,0 +1,5 @@
+K = {q0, q1, q2, q3, M}
+E = (0,1)
+S = teste9AfdGramatica.json
+I = q0
+F = {q3}
