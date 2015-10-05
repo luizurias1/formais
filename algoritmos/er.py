@@ -26,12 +26,12 @@ class Er:
         pilhaOp = []
         auts = []
         done = ''
+
         for element in self.expression:
             if element not in self.operacoes:
                 if element != ')' and element != '(' and element not in self.alfabeto and element != '\n':
                     self.alfabeto.append(element)
 
-        print(self.alfabeto)
         for element in self.expression:
             if element == '(':
                 contador += 1
@@ -78,7 +78,6 @@ class Er:
                 b = auts.pop()
                 result = self.toConcatenation(b,a)
                 auts.append(result)
-        print(done)
         return auts.pop()
 
     '''
@@ -92,11 +91,11 @@ class Er:
         automato = {}
         Morto = {}
         Morto = {element : Morto}
-        automato['Final' + str(self.number)] = {element : ['Morto' + str(self.number)]}
-        automato['Inicial' + str(self.number)] = {element : ['Final' + str(self.number)]}
-        automato['Morto' + str(self.number)] = {element : ['Morto' + str(self.number)]}
-        inicial = 'Inicial' + str(self.number)
-        finais = ['Final' + str(self.number)]
+        automato['Fim' + str(self.number)] = {element : ['M']}
+        automato['Ini' + str(self.number)] = {element : ['Fim' + str(self.number)]}
+        automato['M'] = {element : ['M']}
+        inicial = 'Ini' + str(self.number)
+        finais = ['Fim' + str(self.number)]
         return automato, inicial, finais
 
     '''
@@ -113,11 +112,9 @@ class Er:
         inicialB = b.getInicial()
         finaisA = a.getFinais()
         finaisB = b.getFinais()
-        print(inicialA)
-        print(inicialB)
         automato = {}
-        automato['InicialOu' + str(self.number)] = {'&': [inicialA, inicialB]}
-        ini = 'InicialOu' + str(self.number)
+        automato['Ou' + str(self.number)] = {'&': [inicialA, inicialB]}
+        ini = 'Ou' + str(self.number)
         fins = []
         for state in finaisA:
             fins.append(state)

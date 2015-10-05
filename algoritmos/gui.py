@@ -117,8 +117,9 @@ def ERAutomato(input):
     data = data_file.read()
     data_file.close()
     test = Tk.Tk()
-    Results = Tk.Label(test, text = data)
+    Results = Tk.Label(test, text = data, justify = 'left')
     Results.grid(row = 20, column = 3, sticky= Tk.W)
+    Results.pack(fill="x")
 
 def automatoER(input):
     input = entrytext.get()
