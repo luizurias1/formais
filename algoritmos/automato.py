@@ -376,10 +376,13 @@ class Automato:
     '''
     def genericAutomata(self):
         generic = copy.deepcopy(self.automato)
+        c = 0
         for k, v in self.automato.items():
             for key, value in v.items():
                 if len(value) > 1:
-                    generic = self.determina()
+                    c += 1
+        if c >= 1:
+            generic = self.determina()
 
         genericAutomata = copy.deepcopy(generic)
 
