@@ -137,6 +137,78 @@ class Automato:
                         ns = ''
                         self.criaEstado(v)
 
+    def aceita(self, palavra):
+        c = 0
+        alfabeto = self.getAlfabeto()
+        for key, value in self.automato.items():
+            for k, v in value.items():
+                if len(v) > 1:
+                    c +=1
+        if c > 0 or '&' in self.getAlfabeto():
+            self.determina()
+        aux = self.automato[self.inicial]
+        estadoAtual = ''
+        for letra in palavra:
+            if letra in aux.keys():
+                for item in aux[letra]:
+                    estadoAtual = item
+                    aux = self.automato[estadoAtual]
+            else:
+                return False
+        if estadoAtual in self.finais:
+            return True
+        else:
+            return False
+
+    def oU(self, automatos):
+        result = {}
+        newInicial = {}
+        newInicial['&'] = []
+        iniciais = []
+        iniciais.append(self.inicial)
+        finais = []
+
+        for aut in automatos:
+            aux = aut.getFinais()
+            for state in aux:
+                if state not in finais:
+                    finais.append(state)
+
+        for a in self.getAlfabeto():
+            newInicial[a] = []
+        
+        for aut in automatos:
+            ini = aut.getInicial()
+            if ini not in iniciais:
+                iniciais.append(ini)
+                x = aut.getDictAutomato()
+            for key, value in x.items():
+                for k, v in value.items():
+                    if k not in newInicial.keys():
+                        newInicial[k] = []
+
+        result['ini'] = newInicial
+        
+        for aut in automatos:
+            x = aut.getDictAutomato()
+            for key, value in x.items():
+                if key not in result.keys():
+                    result[key] = value
+        
+        for key, value in self.automato.items():
+            if key not in result.keys():
+                result[key] = value
+
+        for state in iniciais:
+            aux = result['ini']
+            aux['&'].append(state)
+
+        for key, value in newInicial.items():
+            if len(value) == 0:
+                newInicial[key].append('M')
+
+        r = Automato(result, 'ini', finais)
+        return r
     '''
     Uma vez Identificado a necessidade do calculo do fecho, o metodo
     procura o conjunto de estados referentes ao fecho de cada um dos
@@ -333,7 +405,6 @@ class Automato:
         terminais = []
         prod = {}
         morto = []
-        # self.determina()
         for k, v in self.automato.items():
             if k != 'M':
                 for key, value in v.items():
@@ -481,6 +552,9 @@ class Automato:
         for key, value in self.automato.items():
             if key == self.inicial:
                 print('{!s:<8} {!s:<15} '.format('->'+''.join(key), value))
+            elif key in self.states.values():
+                if key == self.states[self.inicial]:
+                    print('{!s:<8} {!s:<15} '.format('->'+''.join(key), value))
             elif key in self.finais:
                 print('{!s:<8} {!s:<15} '.format('*'+''.join(key), value))
             else:    
