@@ -41,6 +41,35 @@ class Automato:
         
         return self.automato
 
+    def removeInalc(self):
+        estados = []
+        notAlcan = []
+        for key, value in self.automato.items():
+            estados.append(str(key))
+
+        notAlcan = copy.deepcopy(estados)
+        for k, v in self.automato.items():
+            for key, value in v.items():
+                for est in value:
+                    if est in notAlcan:
+                        notAlcan.remove(est)
+
+        for limpa in notAlcan:
+            estados.remove(limpa)
+        estadosFim = []
+        estadosAux = []
+        for a in estados:
+            if a in self.finais:
+                estadosFim.append(a)
+            else:
+                estadosAux.append(a)
+
+        estados = []
+        estados.append(estadosAux)
+        estados.append(estadosFim)
+
+        print(estados)
+
     def organizaAutomato(self):
         help = copy.deepcopy(self.automato)
         for k, v in help.items():

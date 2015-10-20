@@ -23,10 +23,24 @@ s = {'q5' : q5, 'q6': q6, 'q7': q7, 'M': M}
 ini = 'q5'
 fins = ['q7']
 
+# para minimizar
+A = {'a': ['B'], 'b': ['F']}
+B = {'a': ['G'], 'b': ['C']}
+C = {'a': ['A'], 'b': ['C']}
+D = {'a': ['C'], 'b': ['G']}
+E = {'a': ['H'], 'b': ['F']}
+F = {'a': ['C'], 'b': ['G']}
+G = {'a': ['G'], 'b': ['E']}
+H = {'a': ['G'], 'b': ['C']}
+ses = {'A' : A, 'B': B, 'C': C, 'D': D, 'E': E, 'F': F, 'G': G, 'H': H}
+inicial1 = 'A'
+finais1 = ['C']
 a = Automato(se, inicial, finais)
 b = Automato(s, ini, fins)
-automatos = [b]
-resultado = a.oU(automatos)
-resultado.printAtomato()
-print a.aceita('abbbabababbbababbba')
+c = Automato(ses,inicial1,finais1)
+c.removeInalc()
+# automatos = [b]
+# resultado = a.oU(automatos)
+# resultado.printAtomato()
+# print a.aceita('abbbabababbbababbba')
 
