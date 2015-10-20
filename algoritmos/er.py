@@ -78,7 +78,8 @@ class Er:
                 b = auts.pop()
                 result = self.toConcatenation(b,a)
                 auts.append(result)
-        return auts.pop()
+        finar = auts.pop()
+        return self.organizeErToAutomato(finar)
 
     '''
     Cria um automato para um caso basico, um automato que aceita um element do alfabeto
@@ -191,3 +192,13 @@ class Er:
         f = open('../testes/'+file+'.out', 'w')
         f.write('Expressao Regular: \n'+self.expression)
         f.close()
+
+    def organizeErToAutomato(self, automato):
+        dictA = automato.getDictAutomato()
+        for key, value in dictA.items():
+            for item in self.alfabeto:
+                if item not in value.keys():
+                    value[item] = ['M']
+            if '&' not in value.keys():
+                value['&'] = ['M']
+        return automato
