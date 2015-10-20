@@ -581,9 +581,9 @@ class Automato:
         for key, value in self.automato.items():
             if key == self.inicial:
                 print('{!s:<8} {!s:<15} '.format('->'+''.join(key), value))
-            elif key in self.states.values():
-                if key == self.states[self.inicial]:
-                    print('{!s:<8} {!s:<15} '.format('->'+''.join(key), value))
+            # elif key in self.states.values():
+            #     if key == self.states[self.inicial]:
+            #         print('{!s:<8} {!s:<15} '.format('->'+''.join(key), value))
             elif key in self.finais:
                 print('{!s:<8} {!s:<15} '.format('*'+''.join(key), value))
             else:    
