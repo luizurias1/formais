@@ -18,6 +18,7 @@ class Automato:
         self.finais = finais
         self.fecho = {}
         self.states = {}
+        self.equivalents = []
 
     '''
     Identifica o alfabeto do automato
@@ -63,12 +64,86 @@ class Automato:
                 estadosFim.append(a)
             else:
                 estadosAux.append(a)
+        for a in notAlcan:
+            del(self.automato[a])
 
         estados = []
         estados.append(estadosAux)
         estados.append(estadosFim)
+        self.equivalents = estados
 
-        print(estados)
+
+    def classEquivalents(self):
+        self.removeInalc()
+        classes = self.equivalents
+        nwArray = []
+        newArray = nwArray
+        alocados = []
+        arrayFinal = ['as']
+        while(arrayFinal != classes):
+            for alf in self.getAlfabeto():
+                for item in classes:
+                    if len(item) > 1:
+                        for element in item:
+                            aux = self.automato[element]
+                            next = aux[alf][0]
+                            if not newArray:
+                                newArray.append([element])
+                            else:
+                                for array in newArray:
+                                    for x in array:
+                                        aux2 = self.automato[x]
+                                        next2 = aux2[alf][0]
+                                        if self.isEquivalent(next,next2):
+                                            if element not in array and element not in alocados:
+                                                array.append(element)
+                                                alocados.append(element)
+                                if element not in alocados:
+                                    newArray.append([element])
+                                    alocados.append(element)
+                    else:
+                        newArray.append(item)
+                classes = newArray
+                self.equivalents = newArray
+                arrayFinal = newArray
+                newArray = []
+                alocados = []
+
+        return arrayFinal
+
+    def min(self):
+        classes = self.classEquivalents()
+        chave = ''
+        dic = {}
+        for i in classes:
+            for j in i:
+                chave+=j
+            aux = dic[chave] = {}
+
+            for j in i:
+                estado = self.automato[j]
+                for k, v in estado.items():
+                  for a in v:
+                      for next in self.equivalents:
+                          if a in next:
+                            aux[k] = next
+                          if self.inicial in a:
+                              self.inicial = ''.join(next)
+            chave = ''
+
+        self.automato = dic
+        self.organizaAutomato()
+        print(self.inicial)
+
+    def isEquivalent(self,a,b):
+        verdade = False
+        for item in self.equivalents:
+            if a in item and b in item:
+                verdade = True
+                return verdade
+            else:
+                verdade = False
+        return verdade
 
     def organizaAutomato(self):
         help = copy.deepcopy(self.automato)
