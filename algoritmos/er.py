@@ -12,6 +12,10 @@ class Er:
         self.operacoes = ['|', '.', '*']
         self.alfabeto = []
         self.number = 0
+    
+    def inicialCase(self, n):
+        self.number = n
+        
     '''
     Aumenta em uma unidade o numero de casos na expressao regular
     '''
