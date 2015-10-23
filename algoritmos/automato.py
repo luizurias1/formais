@@ -25,8 +25,13 @@ class Automato:
     @return, array com os elementos do alfabeto
     '''
     def getAlfabeto(self):
-        aState = next (iter (self.automato.values()))
-        alfabeto = aState.keys()
+        # aState = next (iter (self.automato.values()))
+        # alfabeto = aState.keys()
+        alfabeto = []
+        for k,v in self.automato.items():
+            for key, value in v.items():
+                if key not in alfabeto:
+                    alfabeto.append(key)
         
         return alfabeto
 
@@ -46,17 +51,20 @@ class Automato:
         estados = []
         notAlcan = []
         for key, value in self.automato.items():
-            estados.append(str(key))
+            if key != self.inicial:
+                estados.append(str(key))
 
         notAlcan = copy.deepcopy(estados)
         for k, v in self.automato.items():
             for key, value in v.items():
                 for est in value:
                     if est in notAlcan:
-                        notAlcan.remove(est)
+                            notAlcan.remove(est)
 
-        for limpa in notAlcan:
-            estados.remove(limpa)
+
+        for limpa in notAlcan :
+                estados.remove(limpa)
+
         estadosFim = []
         estadosAux = []
         for a in estados:
@@ -66,6 +74,10 @@ class Automato:
                 estadosAux.append(a)
         for a in notAlcan:
             del(self.automato[a])
+        if self.inicial in self.finais and self.inicial not in estadosFim:
+            estadosFim.append(self.inicial)
+        elif self.inicial not in estadosAux and self.inicial not in estadosFim:
+            estadosAux.append(self.inicial)
 
         estados = []
         estados.append(estadosAux)
@@ -75,6 +87,7 @@ class Automato:
 
     def classEquivalents(self):
         self.removeInalc()
+        mudou = copy.deepcopy(self.equivalents)
         classes = self.equivalents
         nwArray = []
         newArray = nwArray
@@ -109,31 +122,31 @@ class Automato:
                 newArray = []
                 alocados = []
 
-        return arrayFinal
+        return arrayFinal,mudou
 
     def min(self):
-        classes = self.classEquivalents()
+        classes, mudou = self.classEquivalents()
         chave = ''
         dic = {}
-        for i in classes:
-            for j in i:
-                chave+=j
-            aux = dic[chave] = {}
+        if classes != mudou:
+            for i in classes:
+                for j in i:
+                    chave+=j
+                aux = dic[chave] = {}
 
-            for j in i:
-                estado = self.automato[j]
-                for k, v in estado.items():
-                  for a in v:
-                      for next in self.equivalents:
-                          if a in next:
-                            aux[k] = next
-                          if self.inicial in a:
-                              self.inicial = ''.join(next)
-            chave = ''
+                for j in i:
+                    estado = self.automato[j]
+                    for k, v in estado.items():
+                      for a in v:
+                          for next in self.equivalents:
+                              if a in next:
+                                aux[k] = next
+                              if self.inicial in a:
+                                  self.inicial = ''.join(next)
+                chave = ''
 
-        self.automato = dic
-        self.organizaAutomato()
-        print(self.inicial)
+            self.automato = dic
+            self.organizaAutomato()
 
     def isEquivalent(self,a,b):
         verdade = False
@@ -155,6 +168,14 @@ class Automato:
                     for array in value:
                         string+=array
                         aux[key] = string.split()
+
+        # if 'M' not in self.automato.keys():
+        #     alf = self.getAlfabeto()
+        #     self.automato['M'] = {}
+        #     asdf = self.automato['M']
+        #     for a in alf:
+        #         if a != '&':
+        #             asdf[a] = ['M']
 
     '''
     Recebe um array com a configuracao de estados novos, cria um dicionario para ele
@@ -241,6 +262,13 @@ class Automato:
                         ns = ''
                         self.criaEstado(v)
 
+    def completaAutomato(self):
+        for k, v in self.automato.items():
+            for key, value in v.items():
+                for alf in self.getAlfabeto():
+                    if alf not in v.keys():
+                        v[alf] = ['M']
+
     def aceita(self, palavra):
         c = 0
         alfabeto = self.getAlfabeto()
@@ -248,8 +276,7 @@ class Automato:
             for k, v in value.items():
                 if len(v) > 1:
                     c +=1
-        if c > 0 or '&' in self.getAlfabeto():
-            self.determina()
+
         aux = self.automato[self.inicial]
         estadoAtual = ''
         for letra in palavra:
@@ -260,7 +287,7 @@ class Automato:
             else:
                 return False
         if estadoAtual in self.finais:
-            return True
+            return True,estadoAtual
         else:
             return False
 
@@ -280,8 +307,9 @@ class Automato:
 
         for a in self.getAlfabeto():
             newInicial[a] = []
-        
+
         for aut in automatos:
+            x = {}
             ini = aut.getInicial()
             if ini not in iniciais:
                 iniciais.append(ini)
@@ -312,6 +340,7 @@ class Automato:
                 newInicial[key].append('M')
 
         r = Automato(result, 'ini', finais)
+        print(r.getAlfabeto())
         return r
     '''
     Uma vez Identificado a necessidade do calculo do fecho, o metodo
@@ -470,6 +499,7 @@ class Automato:
 
         self.automato = finalDict.copy()
         self.d = finalDict.copy()
+        self.inicial = self.states[self.inicial]
 
     '''
     Ordena a sequencia de metodos necessarios para a determinizacao, 
@@ -702,3 +732,22 @@ class Automato:
 
     def getFinais(self):
         return self.finais
+
+    def stateOfError(self):
+        m = {}
+        for a in self.getAlfabeto():
+            m[a] = ['M']
+        self.automato['M'] = m
+
+    def putAlfabetAndMorto(self):
+        for key, value in self.automato.items():
+            if value != {}:
+                for k, v in value.items():
+                    for item in self.getAlfabeto():
+                        if item not in value.keys():
+                            value[item] = ['M']
+                        if v == []:
+                            v.append('M')
+            else:
+                for item in self.getAlfabeto():
+                    value[item] = ['M']

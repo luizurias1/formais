@@ -3,6 +3,7 @@ from automato import Automato
 from leitor import Leitor
 from grammar import Grammar
 from leitorG import LeitorG
+from lex import Lex
 
 # Comeca e termina com a mesma letra
 # q0 = {'a': ['q1'], 'b': ['q2']}
@@ -37,11 +38,12 @@ inicial1 = 'A'
 finais1 = ['C']
 # a = Automato(se, inicial, finais)
 # b = Automato(s, ini, fins)
-c = Automato(ses,inicial1,finais1)
-c.min()
-c.printAtomato()
+# c = Automato(ses,inicial1,finais1)
+# c.min()
+# c.printAtomato()
 # automatos = [b]
 # resultado = a.oU(automatos)
 # resultado.printAtomato()
 # print a.aceita('abbbabababbbababbba')
-
+l = Lex()
+l.lexer()
