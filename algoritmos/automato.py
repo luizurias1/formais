@@ -25,8 +25,6 @@ class Automato:
     @return, array com os elementos do alfabeto
     '''
     def getAlfabeto(self):
-        # aState = next (iter (self.automato.values()))
-        # alfabeto = aState.keys()
         alfabeto = []
         for k,v in self.automato.items():
             for key, value in v.items():
@@ -141,7 +139,7 @@ class Automato:
                           for next in self.equivalents:
                               if a in next:
                                 aux[k] = next
-                              if self.inicial in a:
+                              if self.inicial in next:
                                   self.inicial = ''.join(next)
                 chave = ''
 
@@ -169,13 +167,23 @@ class Automato:
                         string+=array
                         aux[key] = string.split()
 
-        # if 'M' not in self.automato.keys():
-        #     alf = self.getAlfabeto()
-        #     self.automato['M'] = {}
-        #     asdf = self.automato['M']
-        #     for a in alf:
-        #         if a != '&':
-        #             asdf[a] = ['M']
+        for key, value in self.automato.items():
+            if value != {}:
+                for k, v in value.items():
+                    for item in self.getAlfabeto():
+                        if item not in value.keys():
+                            value[item] = ['M']
+                        if v == []:
+                            v.append('M')
+            else:
+                for item in self.getAlfabeto():
+                    value[item] = ['M']
+
+        m = {}
+        for a in self.getAlfabeto():
+            m[a] = ['M']
+        self.automato['M'] = m
+        self.completaAutomato()
 
     '''
     Recebe um array com a configuracao de estados novos, cria um dicionario para ele
@@ -500,6 +508,13 @@ class Automato:
         self.automato = finalDict.copy()
         self.d = finalDict.copy()
         self.inicial = self.states[self.inicial]
+        finalAtual = []
+        
+        for key, value in self.states.items():
+            for state in self.finais:
+                if key == state:
+                    finalAtual.append(value)
+        self.finais = finalAtual
 
     '''
     Ordena a sequencia de metodos necessarios para a determinizacao, 
@@ -686,9 +701,6 @@ class Automato:
         for key, value in self.automato.items():
             if key == self.inicial:
                 print('{!s:<8} {!s:<15} '.format('->'+''.join(key), value))
-            # elif key in self.states.values():
-            #     if key == self.states[self.inicial]:
-            #         print('{!s:<8} {!s:<15} '.format('->'+''.join(key), value))
             elif key in self.finais:
                 print('{!s:<8} {!s:<15} '.format('*'+''.join(key), value))
             else:    
@@ -732,22 +744,3 @@ class Automato:
 
     def getFinais(self):
         return self.finais
-
-    def stateOfError(self):
-        m = {}
-        for a in self.getAlfabeto():
-            m[a] = ['M']
-        self.automato['M'] = m
-
-    def putAlfabetAndMorto(self):
-        for key, value in self.automato.items():
-            if value != {}:
-                for k, v in value.items():
-                    for item in self.getAlfabeto():
-                        if item not in value.keys():
-                            value[item] = ['M']
-                        if v == []:
-                            v.append('M')
-            else:
-                for item in self.getAlfabeto():
-                    value[item] = ['M']

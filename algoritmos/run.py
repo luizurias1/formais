@@ -4,6 +4,7 @@ from leitor import Leitor
 from grammar import Grammar
 from leitorG import LeitorG
 from lex import Lex
+from er import Er
 
 # Comeca e termina com a mesma letra
 # q0 = {'a': ['q1'], 'b': ['q2']}
@@ -23,27 +24,28 @@ from lex import Lex
 # s = {'q5' : q5, 'q6': q6, 'q7': q7, 'M': M}
 # ini = 'q5'
 # fins = ['q7']
+#
+# A = {'a': ['B'], 'b': ['F']}
+# B = {'a': ['G'], 'b': ['C']}
+# C = {'a': ['A'], 'b': ['C']}
+# D = {'a': ['C'], 'b': ['G']}
+# E = {'a': ['H'], 'b': ['F']}
+# F = {'a': ['C'], 'b': ['G']}
+# G = {'a': ['G'], 'b': ['E']}
+# H = {'a': ['G'], 'b': ['C']}
+# s = {'A' : A, 'B': B, 'C': C, 'D': D, 'E': E, 'F': F, 'G': G, 'H': H}
+# inicial = 'A'
+# finais = ['C']
 
-# para minimizar
-A = {'a': ['B'], 'b': ['F']}
-B = {'a': ['G'], 'b': ['C']}
-C = {'a': ['A'], 'b': ['C']}
-D = {'a': ['C'], 'b': ['G']}
-E = {'a': ['H'], 'b': ['F']}
-F = {'a': ['C'], 'b': ['G']}
-G = {'a': ['G'], 'b': ['E']}
-H = {'a': ['G'], 'b': ['C']}
-ses = {'A' : A, 'B': B, 'C': C, 'D': D, 'E': E, 'F': F, 'G': G, 'H': H}
-inicial1 = 'A'
-finais1 = ['C']
-# a = Automato(se, inicial, finais)
-# b = Automato(s, ini, fins)
-# c = Automato(ses,inicial1,finais1)
-# c.min()
-# c.printAtomato()
-# automatos = [b]
-# resultado = a.oU(automatos)
-# resultado.printAtomato()
-# print a.aceita('abbbabababbbababbba')
-l = Lex()
-l.lexer()
+# automato = Automato(s, inicial, finais)
+# automato.min()
+# automato.printAtomato()
+
+# lex = Lex()
+# lex.lexer()
+
+er = Er('((((((a|b)|c)|d)|e)|g)*)')
+automato = er.erToAutomato()
+automato.determina()
+# automato.printAtomato()
+print (automato.aceita('eaaaaaaabbbbababababagbebeaebeaebeaecacccccdaaa'))
