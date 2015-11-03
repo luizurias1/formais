@@ -48,15 +48,17 @@ class Automato:
     def removeInalc(self):
         estados = []
         notAlcan = []
+        
         for key, value in self.automato.items():
             if key != self.inicial:
                 estados.append(str(key))
 
         notAlcan = copy.deepcopy(estados)
+        
         for k, v in self.automato.items():
             for key, value in v.items():
                 for est in value:
-                    if est in notAlcan:
+                    if est in notAlcan and est != k:
                             notAlcan.remove(est)
 
 
@@ -90,28 +92,32 @@ class Automato:
         nwArray = []
         newArray = nwArray
         alocados = []
-        arrayFinal = ['as']
+        arrayFinal = ['']
+        
         while(arrayFinal != classes):
             for alf in self.getAlfabeto():
                 for item in classes:
                     if len(item) > 1:
                         for element in item:
-                            aux = self.automato[element]
-                            next = aux[alf][0]
-                            if not newArray:
+                            if element == 'M':
                                 newArray.append([element])
                             else:
-                                for array in newArray:
-                                    for x in array:
-                                        aux2 = self.automato[x]
-                                        next2 = aux2[alf][0]
-                                        if self.isEquivalent(next,next2):
-                                            if element not in array and element not in alocados:
-                                                array.append(element)
-                                                alocados.append(element)
-                                if element not in alocados:
+                                aux = self.automato[element]
+                                next = aux[alf][0]
+                                if not newArray:
                                     newArray.append([element])
-                                    alocados.append(element)
+                                else:
+                                    for array in newArray:
+                                        for x in array:
+                                            aux2 = self.automato[x]
+                                            next2 = aux2[alf][0]
+                                            if self.isEquivalent(next,next2):
+                                                if element not in array and element not in alocados:
+                                                    array.append(element)
+                                                    alocados.append(element)
+                                    if element not in alocados:
+                                        newArray.append([element])
+                                        alocados.append(element)
                     else:
                         newArray.append(item)
                 classes = newArray
@@ -124,6 +130,8 @@ class Automato:
 
     def min(self):
         classes, mudou = self.classEquivalents()
+        print(classes)
+        print(mudou)
         chave = ''
         dic = {}
         if classes != mudou:

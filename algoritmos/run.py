@@ -41,11 +41,27 @@ from er import Er
 # automato.min()
 # automato.printAtomato()
 
+A = {'a': ['M'], 'b': ['A', 'B']}
+B = {'a': ['A'], 'b': ['B']}
+C = {'a': ['C', 'D'], 'b': ['M']}
+D = {'a': ['D'], 'b': ['C']}
+S = {'a': ['A', 'C', 'D'], 'b': ['A', 'B', 'C']}
+M = {'a': ['M'], 'b': ['M']}
+s = {'A' : A, 'B': B, 'C': C, 'D': D, 'S': S, 'M': M}
+
+inicial = 'S'
+finais = ['C', 'A', 'B', 'D']
+
+automato = Automato(s, inicial, finais)
+automato.determina()
+automato.min()
+automato.printAtomato()
+
 # lex = Lex()
 # lex.lexer()
 
-er = Er('((((((a|b)|c)|d)|e)|g)*)')
-automato = er.erToAutomato()
-automato.determina()
-# automato.printAtomato()
-print (automato.aceita('eaaaaaaabbbbababababagbebeaebeaebeaecacccccdaaa'))
+# er = Er('((((((a|b)|c)|d)|e)|g)*)')
+# automato = er.erToAutomato()
+# automato.determina()
+# # automato.printAtomato()
+# print (automato.aceita('eaaaaaaabbbbababababagbebeaebeaebeaecacccccdaaa'))
