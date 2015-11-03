@@ -41,24 +41,51 @@ from er import Er
 # automato.min()
 # automato.printAtomato()
 
-A = {'a': ['M'], 'b': ['A', 'B']}
-B = {'a': ['A'], 'b': ['B']}
-C = {'a': ['C', 'D'], 'b': ['M']}
-D = {'a': ['D'], 'b': ['C']}
-S = {'a': ['A', 'C', 'D'], 'b': ['A', 'B', 'C']}
-M = {'a': ['M'], 'b': ['M']}
-s = {'A' : A, 'B': B, 'C': C, 'D': D, 'S': S, 'M': M}
+# A = {'a': ['M'], 'b': ['A', 'B']}
+# B = {'a': ['A'], 'b': ['B']}
+# C = {'a': ['C', 'D'], 'b': ['M']}
+# D = {'a': ['D'], 'b': ['C']}
+# S = {'a': ['A', 'C', 'D'], 'b': ['A', 'B', 'C']}
+# M = {'a': ['M'], 'b': ['M']}
+# s = {'A' : A, 'B': B, 'C': C, 'D': D, 'S': S, 'M': M}
 
-inicial = 'S'
-finais = ['C', 'A', 'B', 'D']
+# inicial = 'S'
+# finais = ['C', 'A', 'B', 'D']
 
-automato = Automato(s, inicial, finais)
-automato.determina()
-automato.min()
-automato.printAtomato()
+# automato = Automato(s, inicial, finais)
+# automato.determina()
+# automato.min()
+# automato.printAtomato()
 
-# lex = Lex()
-# lex.lexer()
+# P.R.O.G.R.A.M.A
+# V.A.R.I.A.V.E.L
+# I.N.T.E.I.R.O
+# T.E.X.T.O
+# A.R.R.A.N.J.O
+# I.N.I.C.I.O.:
+# E.N.Q.U.A.N.T.O
+# C.O.N.C.L.U.I.D.O
+# S.E.:
+# S.E.N.A.O.:
+# L.E.I.A
+# M.O.S.T.R.A
+# E
+# O.U
+# N.A.O
+# F.I.N.A.L
+
+lex = Lex()
+reservadas = lex.lexer()
+print(reservadas.aceita('MLEIA '))
+# reservadas.printAtomato()
+# reservadas.organizaAutomato()
+# reservadas.determina()
+# reservadas.montaAutomato()
+# reservadas.min()
+# reservadas.printAtomato()
+# print(reservadas.getFinais())
+# print(reservadas.aceita('LEIA'))
+# reservadas.printAtomato()
 
 # er = Er('((((((a|b)|c)|d)|e)|g)*)')
 # automato = er.erToAutomato()

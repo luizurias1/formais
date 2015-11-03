@@ -93,7 +93,8 @@ class Automato:
         newArray = nwArray
         alocados = []
         arrayFinal = ['']
-        
+        unicos = []
+
         while(arrayFinal != classes):
             for alf in self.getAlfabeto():
                 for item in classes:
@@ -101,6 +102,7 @@ class Automato:
                         for element in item:
                             if element == 'M':
                                 newArray.append([element])
+                                unicos.append(element)
                             else:
                                 aux = self.automato[element]
                                 next = aux[alf][0]
@@ -109,20 +111,24 @@ class Automato:
                                 else:
                                     for array in newArray:
                                         for x in array:
-                                            aux2 = self.automato[x]
-                                            next2 = aux2[alf][0]
-                                            if self.isEquivalent(next,next2):
-                                                if element not in array and element not in alocados:
-                                                    array.append(element)
-                                                    alocados.append(element)
+                                            if (x in self.finais and element in self.finais) or (x not in self.finais and element not in self.finais):
+                                                aux2 = self.automato[x]
+                                                next2 = aux2[alf][0]
+                                                if x not in unicos:
+                                                    if self.isEquivalent(next,next2):
+                                                        if element not in array and element not in alocados:
+                                                            array.append(element)
+                                                            alocados.append(element)
                                     if element not in alocados:
                                         newArray.append([element])
                                         alocados.append(element)
                     else:
                         newArray.append(item)
+                        unicos.append(item[0])
+
+                arrayFinal = classes
                 classes = newArray
                 self.equivalents = newArray
-                arrayFinal = newArray
                 newArray = []
                 alocados = []
 
@@ -131,7 +137,6 @@ class Automato:
     def min(self):
         classes, mudou = self.classEquivalents()
         print(classes)
-        print(mudou)
         chave = ''
         dic = {}
         if classes != mudou:
@@ -152,7 +157,8 @@ class Automato:
                 chave = ''
 
             self.automato = dic
-            self.organizaAutomato()
+            # self.organizaAutomato()
+            self.montaAutomato()
 
     def isEquivalent(self,a,b):
         verdade = False
@@ -164,7 +170,8 @@ class Automato:
                 verdade = False
         return verdade
 
-    def organizaAutomato(self):
+    def montaAutomato(self):
+
         help = copy.deepcopy(self.automato)
         for k, v in help.items():
             aux= self.automato[k]
@@ -174,6 +181,8 @@ class Automato:
                     for array in value:
                         string+=array
                         aux[key] = string.split()
+
+    def organizaAutomato(self):
 
         for key, value in self.automato.items():
             if value != {}:
@@ -307,9 +316,10 @@ class Automato:
         else:
             return False
 
-    def oU(self, automatos):
+    def oU(self, automatos, separador):
         result = {}
         newInicial = {}
+        fimUnico = {}
         newInicial['&'] = []
         iniciais = []
         iniciais.append(self.inicial)
@@ -323,6 +333,8 @@ class Automato:
 
         for a in self.getAlfabeto():
             newInicial[a] = []
+            fimUnico[a] = ['M']
+
 
         for aut in automatos:
             x = {}
@@ -332,11 +344,13 @@ class Automato:
                 x = aut.getDictAutomato()
             for key, value in x.items():
                 for k, v in value.items():
+                    fimUnico[k] = ['M']
                     if k not in newInicial.keys():
                         newInicial[k] = []
 
         result['ini'] = newInicial
-        
+        result['fU'] = fimUnico
+
         for aut in automatos:
             x = aut.getDictAutomato()
             for key, value in x.items():
@@ -346,6 +360,8 @@ class Automato:
         for key, value in self.automato.items():
             if key not in result.keys():
                 result[key] = value
+            if key in self.finais and key not in finais:
+                finais.append(key)
 
         for state in iniciais:
             aux = result['ini']
@@ -355,8 +371,13 @@ class Automato:
             if len(value) == 0:
                 newInicial[key].append('M')
 
+        for f in finais:
+            aux = result[f]
+            aux[separador] = ['fU']
+
+        finais = ['fU']
         r = Automato(result, 'ini', finais)
-        print(r.getAlfabeto())
+
         return r
     '''
     Uma vez Identificado a necessidade do calculo do fecho, o metodo
