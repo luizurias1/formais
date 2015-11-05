@@ -11,7 +11,7 @@ class Lex:
         word = ''
         automatos = []
         states = 0
-        file = open('algoritmos/reservado.txt', 'r')
+        file = open('../algoritmos/reservado.txt', 'r')
         for line in file:
             for element in line:
 
@@ -33,11 +33,11 @@ class Lex:
     def lexer(self):
         automatos = self.reserved()
         first = automatos[0]
-        del(automatos[0])
         result = first.oU(automatos, ' ')
         result.determina()
         result.organizaAutomato()
         result.montaAutomato()
-        # result.min()
+        # result.printAtomato()
+        result.min()
         result.printAtomato()
         return result

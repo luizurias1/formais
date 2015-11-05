@@ -36,7 +36,7 @@ from er import Er
 # s = {'A' : A, 'B': B, 'C': C, 'D': D, 'E': E, 'F': F, 'G': G, 'H': H}
 # inicial = 'A'
 # finais = ['C']
-
+#
 # automato = Automato(s, inicial, finais)
 # automato.min()
 # automato.printAtomato()
@@ -48,10 +48,10 @@ from er import Er
 # S = {'a': ['A', 'C', 'D'], 'b': ['A', 'B', 'C']}
 # M = {'a': ['M'], 'b': ['M']}
 # s = {'A' : A, 'B': B, 'C': C, 'D': D, 'S': S, 'M': M}
-
+#
 # inicial = 'S'
 # finais = ['C', 'A', 'B', 'D']
-
+#
 # automato = Automato(s, inicial, finais)
 # automato.determina()
 # automato.min()
@@ -76,7 +76,7 @@ from er import Er
 
 lex = Lex()
 reservadas = lex.lexer()
-print(reservadas.aceita('MLEIA '))
+print(reservadas.aceita('MOLEIA '))
 # reservadas.printAtomato()
 # reservadas.organizaAutomato()
 # reservadas.determina()

@@ -131,12 +131,72 @@ class Automato:
                 self.equivalents = newArray
                 newArray = []
                 alocados = []
+                unicos = []
 
         return arrayFinal,mudou
 
+    def equivalents2(self):
+        boolean = []
+        self.removeInalc()
+        mudou = copy.deepcopy(self.equivalents)
+        classes = self.equivalents
+        newArray = []
+        arrayFinal = ['']
+        novo = []
+        unicos = []
+        morto = False
+        for m in classes:
+            if 'M' in m:
+                m.remove('M')
+                morto = True
+
+        if morto == True:
+            classes.append(['M'])
+
+        while(arrayFinal != classes):
+            for item in classes:
+                for element in item:
+                    if len(item) > 1:
+                        if not newArray:
+                            newArray.append([element])
+                        else:
+                            conta = 0
+                            for array in newArray:
+                                if ''.join(array) not in unicos:
+                                    primeiro = array[0]
+                                    if element != primeiro:
+                                        for alf in self.getAlfabeto():
+                                            aux = self.automato[primeiro]
+                                            next = aux[alf][0]
+                                            aux2 = self.automato[element]
+                                            next2 = aux2[alf][0]
+                                            if self.isEquivalent(next2,next):
+                                                boolean.append(True)
+                                            else:
+                                                boolean.append(False)
+                                        if False not in boolean and element not in array:
+                                            array.append(element)
+                                        boolean = []
+                            for array in newArray:
+                                if element in array:
+                                    novo.append(True)
+                                else:
+                                    novo.append(False)
+                            if True not in novo:
+                                newArray.append([element])
+                            novo = []
+                    else:
+                        newArray.append(item)
+                        unicos.append(item[0])
+            print(newArray)
+            arrayFinal = classes
+            classes = newArray
+            self.equivalents = newArray
+            newArray = []
+        return arrayFinal, mudou
+
     def min(self):
-        classes, mudou = self.classEquivalents()
-        print(classes)
+        classes, mudou = self.equivalents2()
         chave = ''
         dic = {}
         if classes != mudou:
@@ -324,6 +384,13 @@ class Automato:
         iniciais = []
         iniciais.append(self.inicial)
         finais = []
+        alfabetoNew = []
+
+        for aut in automatos:
+            alf = aut.getAlfabeto()
+            for alfabeto in alf:
+                if alfabeto not in alfabetoNew:
+                    alfabetoNew.append(alfabeto)
 
         for aut in automatos:
             aux = aut.getFinais()
@@ -375,6 +442,10 @@ class Automato:
             aux = result[f]
             aux[separador] = ['fU']
 
+        for k,v in result.items():
+            for alf in alfabetoNew:
+                if alf not in v.keys():
+                    v[alf] = ['M']
         finais = ['fU']
         r = Automato(result, 'ini', finais)
 
